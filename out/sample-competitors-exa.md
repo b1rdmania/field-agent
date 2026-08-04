@@ -1,0 +1,62 @@
+# Competitive landscape - Exa (exa.ai, the search API for AI agents)
+
+Built with Exa search + Claude. Research is a starting point, not a send list.
+
+## Competitive set
+
+**Direct competitors** (same primitive: API-first web search/retrieval built for AI agents)
+
+| Player | What they actually do | Most recent move | Overlap with Exa |
+|---|---|---|---|
+| Tavily | Search-access API tuned for easy integration into agent frameworks (e.g. LangChain); returns search + extraction | Acquired by Nebius, Feb 2026, per the answer-API synthesis (source not independently in the raw set) | High — same buyer (agent developers), same primitive (search API), most-cited head-to-head competitor |
+| Parallel | "Ladder" of processor tiers for different task complexity; positioned for production-grade factual accuracy | Hit a $2B valuation, per serp.fast's category guide (dated Jun 19, 2026) | High — same buyer, competes on accuracy/production reliability rather than raw index access |
+| Perplexity (Sonar API) | Research-oriented API returning synthesized, cited answers rather than raw results | No dated move found in this research | Medium — overlaps on "give an agent an answer from the web," but answer-first vs. Exa's raw-index/neural-retrieval model |
+| You.com | Full research API returning synthesized, cited answers ("Frontier" tier referenced as a benchmark competitor in Exa's own Deep Max post) | No dated move found in this research | Medium — same answer-first overlap as Perplexity |
+| Linkup | High-precision, grounded-answer API for structured outputs | No dated move found in this research | Medium — production-agent buyer overlap, precision/structured-output framing |
+| Brave Search (API) | Independent search index, positioned for privacy/compliance-sensitive use cases | No dated move found in this research | Low-medium — independent index is a shared trait with Exa, but the buying reason (compliance/independence) differs from Exa's semantic-retrieval pitch |
+| Firecrawl | Custom paragraph-level relevance model on `/search`; claims 94.7% on its own SimpleQA harness and underprices Tavily/Exa on Standard-tier cost per search (per Pondero, published Jul 30, 2026) | July 22, 2026 `/search` relevance-model launch | High — directly benchmarked against Exa on accuracy and price by third-party review |
+| Serper | Fast, cheap Google SERP API (returns Google results, not an independent index) | No dated move found in this research | Low — different primitive (SERP proxy vs. semantic index); overlaps only at the "get web results into an LLM" layer |
+
+**Adjacent / smaller entrants** (worth naming as market-crowding signal, not yet credible competitive threats — thin evidence, small teams, some with confounding side businesses)
+
+| Player | What they actually do | Overlap with Exa |
+|---|---|---|
+| Octen AI | Early-stage (founded 2025, 4 employees) real-time web search infra for agents, claims 99ms response time | Same pitch as Exa at much earlier stage; unverified beyond own site copy |
+| Querit AI | 6-person Singapore team; "trillion-scale multilingual index" search/retrieval API for LLMs | Same pitch; claims unverified by third-party source |
+| Seltz | 10-person SF team; "web knowledge layer for AI agents" | Same pitch; too early to assess traction |
+| PageIndex | London-based (5 people), reasoning-based RAG infrastructure, not a search API per se | Adjacent (RAG infra, not retrieval API) |
+| Lucenia | On-prem Lucene/OpenSearch-based enterprise search, autoscaling | Adjacent — enterprise on-prem search, not agent-native or API-first in the same sense |
+| Macha | Web3/decentralized search protocol | Not a credible overlap — different market entirely (crypto/Web3 discovery), included here only to flag as noise, not competition |
+
+Cut from this set: serp.fast, fastCRW, Rhumb, Codeables, Pondero, alatirok — these are third-party comparison/directory sites, not competitors. They're used above and in "Recent moves" only as sourcing for claims about the named companies, not listed as players themselves.
+
+## Recent moves
+
+1. **Firecrawl ships a custom relevance model on `/search`, claims 94.7% SimpleQA and undercuts Exa/Tavily on price** — Jul 22, 2026 launch, reported Jul 30, 2026. [pondero.ai](https://pondero.ai/agents/guides/firecrawl-vs-tavily-vs-exa-search-api-agents-july-2026/). *So what:* the accuracy-vs-cost tradeoff that used to favor Exa on quality is being contested directly, on Exa's own turf, by a cheaper entrant — GTM should have a ready answer on why raw-index/neural-retrieval beats a paragraph-relevance model, not just an accuracy number.
+2. **Exa's Grok Build plugin goes live for agentic web search** — Jul 24, 2026. [cryptobriefing.com](https://cryptobriefing.com/exa-plugin-grok-build-agentic-search/). *So what:* a distribution win inside a major agent-building platform — usable as a proof point of ecosystem reach in EMEA pitches.
+3. **Exa raises $250M Series C at $2.2B, led by a16z** — May 20, 2026. [exa.ai/blog](https://exa.ai/blog/announcing-series-c), corroborated by [a16z.com](https://a16z.com/announcement/investing-in-exa/) and [siliconangle.com](https://siliconangle.com/2026/05/20/exa-labs-raises-250m-2-2b-valuation-ai-search-tools/). *So what:* biggest funding event in the category to date; per the answer-API synthesis this landed the morning after Google's agentic-search pivot, giving Exa a stronger "we called this" narrative and a war chest competitors like Linkup and You.com can't match.
+4. **Exa launches Deep Max, benchmarked against Parallel Ultra, You.com Frontier and Perplexity Deep Research** — Apr 20, 2026. [exa.ai/blog](https://exa.ai/blog/deep-max). *So what:* Exa is naming its real competitive set in its own launch material — useful confirmation of who the company itself considers the bar to beat, and a source of head-to-head benchmark language sales can reuse.
+5. **Tavily acquired by Nebius** — Feb 2026, per the cited-answer synthesis (source article not present in the raw set, so treat as secondary sourcing). *So what:* removes the most direct, cloud-agnostic independent competitor from the field as a standalone company; worth confirming primary sourcing before repeating this claim externally, but if accurate it narrows the "independent search API" positioning to Exa and a shrinking few.
+
+## Positioning read
+
+Exa's clearest differentiation, grounded in its own material and the third-party comparisons, is architectural: it sells raw access to a purpose-built semantic index (neural retrieval, find-similar) rather than a synthesized answer or a thin layer over someone else's index. The answer-API synthesis is explicit that this gives developers more control over retrieval than answer-first products like Perplexity Sonar or You.com, and more depth than a SERP proxy like Serper. Independently, Exa has scaled to an 80-billion-page index and shipped sub-200ms and sub-180ms latency products (Exa Instant), which is a scale-plus-speed combination none of the smaller entrants (Octen, Querit, Seltz) have public evidence to match. The Series C and the Google agentic-search pivot together give Exa a market-validation story — "we built the thesis Google just confirmed" — that is currently unique among direct competitors.
+
+Where rivals currently have the better story: on pure price-performance, Firecrawl's July 2026 `/search` launch claims higher accuracy (94.7% SimpleQA, per its own harness) at roughly a quarter of Exa's per-search cost ($1.66 vs. ~$7 per 1,000, per Pondero's pricing breakdown) — an unverified but public and specific claim that GTM needs a rebuttal for, since "we're more expensive but better" is a weak sell without a comparably specific counter-benchmark. Tavily also has the stronger integration/ease-of-use story for the LangChain-style agent-builder segment, per the cited-answer synthesis, and one third-party scorer (Rhumb) has it in a near statistical tie with Exa (8.6 vs 8.7) on a proprietary scoring methodology — worth noting as an isolated source, not independently corroborated, but it signals Tavily's developer-experience reputation is real in at least one external assessment.
+
+The claim Exa can make that rivals plausibly cannot: it is the only player in this set with both (a) a self-owned 80-billion-page semantic index (not a wrapper on Google/Bing, unlike Serper) and (b) frontier-scale funding ($250M Series C, $2.2B valuation) validated by the same investor thesis that motivated Google's own pivot to agentic search. *This combination is stated in the source material but the "rivals cannot make this claim" framing is inference* — it has not been independently checked against Parallel's ($2B valuation, per serp.fast) balance sheet or index ownership, so treat it as a strong working hypothesis, not a verified exclusivity claim.
+
+## White space
+
+1. **EMEA-specific enterprise/compliance-driven independent search.** Brave Search's whole value prop (per the cited-answer synthesis and alatirok's comparison) is index independence for privacy/compliance use cases — a narrative that maps directly onto EU data-residency and AI Act conversations. None of the research surfaces an EMEA-localized index-independence pitch from Exa; this looks like an open narrative Exa could own regionally if the compliance angle is developed.
+2. **The "raw index vs. answer API" education gap.** Multiple sources (the cited-answer synthesis, alatirok, codeables) independently frame the category as split between raw-retrieval players (Exa, Tavily, Brave) and answer-first players (Perplexity, You.com), but no source shows anyone running a sustained campaign explaining *why* raw retrieval matters for production agents rather than demos. Exa's own Deep Max post gestures at this (accuracy + latency benchmarks) but doesn't generalize it into a category narrative — an opening for content/positioning work.
+3. **Price-tier segmentation below Exa's current pricing.** Firecrawl and Octen are both making low-cost/low-latency claims (Firecrawl's $1.66/1,000 searches; Octen's 99ms average response) aimed at cost-sensitive, high-volume agent workloads. There's no evidence Exa has a matching tier or messaging for that segment — worth flagging as a gap rather than a strength, since low-end price pressure could erode share among indie/startup developers if unaddressed.
+
+## Gaps
+
+- **Tavily/Nebius acquisition**: sourced only from the cited-answer synthesis, not from a primary article in the raw research set. Needs a direct source (deal announcement, Nebius press release) before it's repeated in external GTM material.
+- **Pricing comparison table**: only fragmentary numbers surfaced (Firecrawl ~$1.66/1,000, Tavily $5–8, Exa ~$7, all via one secondary source, Pondero). No primary pricing pages were pulled for Exa, Tavily, Parallel, or Linkup — a full normalized pricing table (the kind serp.fast claims to have built) should be assembled directly from vendor pricing pages.
+- **EMEA-specific data**: nothing in this research addresses EMEA customer counts, EMEA competitor presence, regional pricing, or EU AI Act/data-residency positioning for any player, despite that being the brief's stated audience. This is the single biggest gap — a human should pull EMEA-specific customer logos, GDPR/data-residency claims, and any EU-based competitor presence (none of the named direct competitors show an EMEA HQ; Tavily is NY-based, Firecrawl and Parallel origin unclear from this set).
+- **Parallel and Linkup**: named repeatedly as direct competitors in the cited answers but have no dated moves, funding figures beyond one valuation claim (Parallel, $2B, single source), or product-launch detail in the raw research. Needs dedicated searches on both.
+- **Source quality**: several "peer" hits (Octen, Querit, Seltz, Macha, Lucenia, PageIndex) come from what appear to be low-substance company database entries, not journalism or vendor primary sources — headcount and funding figures in these should be treated as unverified until cross-checked (e.g. via Crunchbase or the companies' own sites).
+- **Rhumb's 8.7/8.6 Exa-vs-Tavily score**: proprietary, undisclosed methodology, single source — flagged in-line above but worth an explicit warning not to cite this externally without knowing how Rhumb's scoring works.

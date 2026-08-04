@@ -143,7 +143,8 @@ def write_pack(slug, title, body):
 
 
 def slugify(*parts):
-    return "-".join("-".join(p.lower().split())[:24] for p in parts if p)
+    clean = ("".join(c if c.isalnum() or c == " " else " " for c in p) for p in parts if p)
+    return "-".join("-".join(p.lower().split())[:24] for p in clean)
 
 
 def read_lines(path):
@@ -311,6 +312,56 @@ currency, existing relationships, open opportunities this could collide with.
 Raw research as JSON (the "for" field = the account):
 {json.dumps(pool, indent=1)}"""
     write_pack(slugify("guests", args.market), f"Guest map - {len(accounts)} accounts, {args.market}", synthesise(prompt))
+
+
+def cmd_competitors(key, args):
+    t = args.target
+    queries = [
+        ("peers", f"company competing directly with {t}", "company", 8, None),
+        ("comparisons", f"{t} vs alternatives comparison", None, 4, "2025-06-01"),
+        ("moves", f"{t} competitor funding round, product launch or partnership announcement", "news", 6, "2025-09-01"),
+        ("positioning", f"how {t} is positioned against its competitors", None, 3, "2025-06-01"),
+    ]
+    pool = gather(key, queries)
+    answers = ask(key, [
+        f"Who are {t}'s main competitors and how do they differ?",
+        f"What has changed in {t}'s competitive market in the last six months?",
+    ])
+    print(f"  {len(pool)} signals gathered, synthesising...")
+    prompt = f"""{EXA_CONTEXT}
+
+Task: competitive landscape for {t}, written for a GTM team deciding where to
+press and what to say in market. Analyst tone: factual, sourced, no trash talk.
+
+Produce markdown with exactly these sections:
+
+## Competitive set
+A table: Player | What they actually do | Most recent move | Overlap with {t}.
+Only players the research supports; separate direct competitors from adjacent
+players. Cut directories and listicles.
+
+## Recent moves
+The five most consequential dated events in this market from the research,
+newest first, each with its source URL and a one-line "so what".
+
+## Positioning read
+Three short paragraphs: where {t} is differentiated, where competitors have
+the better story right now, and the claim {t} can make that rivals cannot.
+Ground every claim; mark inference as inference.
+
+## White space
+Two or three underserved segments or unanswered narratives the research
+suggests, each with the evidence that points at it.
+
+## Gaps
+What this research could not establish and where a human should dig next.
+
+Cited answers from Exa's answer API:
+{json.dumps(answers, indent=1)}
+
+Raw search research as JSON:
+{json.dumps(pool, indent=1)}"""
+    write_pack(slugify("competitors", t), f"Competitive landscape - {t}", synthesise(prompt))
 
 
 def cmd_brief(key, args):
@@ -508,6 +559,9 @@ def main():
     m.add_argument("segment")
     m.add_argument("--cities", default="London,Paris,Amsterdam,Munich,Berlin,Stockholm")
 
+    c = sub.add_parser("competitors", help="competitive landscape for a company or space")
+    c.add_argument("target")
+
     e = sub.add_parser("expand", help="findSimilar lookalikes from seed accounts")
     e.add_argument("accounts", help="file: one account name per line")
     e.add_argument("--market", default="EMEA")
@@ -541,7 +595,7 @@ def main():
     args = ap.parse_args()
     key = load_key()
     print(f"field-agent {args.cmd}")
-    {"market": cmd_market, "expand": cmd_expand, "guests": cmd_guests,
+    {"market": cmd_market, "competitors": cmd_competitors, "expand": cmd_expand, "guests": cmd_guests,
      "brief": cmd_brief, "venues": cmd_venues, "dinner": cmd_dinner,
      "followup": cmd_followup, "playbook": cmd_playbook}[args.cmd](key, args)
 
