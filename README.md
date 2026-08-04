@@ -54,7 +54,19 @@ export EXA_API_KEY=your-key   # or put EXA_API_KEY=... in .env
 python3 field_agent.py competitors "your company here"
 ```
 
-Requires Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-code) on PATH. No other dependencies — one file, stdlib only. A run costs a few cents of Exa credit.
+Requires Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-code) on PATH. No other dependencies — one file, stdlib only. A run costs a few cents of Exa credit and looks like this:
+
+```text
+$ python3 field_agent.py competitors "Exa (exa.ai, the search API for AI agents)"
+field-agent competitors
+  exa search: [peers] company competing directly with Exa
+  exa search: [comparisons] Exa vs alternatives comparison
+  exa search: [moves] Exa competitor funding round, product launch or partnership announcement
+  exa answer: Who are Exa's main competitors and how do they differ?
+  exa answer: What has changed in Exa's competitive market in the last six months?
+  20 signals gathered, synthesising...
+  wrote out/competitors-exa.md
+```
 
 ## What it doesn't do
 
@@ -65,6 +77,10 @@ Requires Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-cod
 ## Data handling
 
 Research pulls public-source data with citations. Personal data stays out of version control: real run output is gitignored, committed samples are redacted to roles and companies. Follow-up packs include the lawful-basis note for contacting event attendees, and the consent checks sit next to the lists they apply to.
+
+## Why this exists
+
+I ran a global events programme for a technology company as the only hire: 35–40 activations a year across Europe, Asia and the US, reported as pipeline. The research load — who should be in the room, why now, what the market is doing, what happens after — is most of the job and almost none of the craft. This is that load, automated, so the person covering a continent spends their time on the part machines can't do: the room. — [Andy Bird](https://x.com/b1rdmania)
 
 ## License
 
