@@ -1,3 +1,9 @@
 .env
+out/guests-*.md
+out/dinner-*.md
+out/market-*.md
+out/followup-*.md
 out/brief-*.md
+accounts*.txt
+attendees*.txt
 __pycache__/
