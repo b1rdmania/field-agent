@@ -1,6 +1,8 @@
 # Market memo - AI platform buyers
 
-Built with Exa search + Claude. Research is a starting point, not a send list.
+Built with Exa search + Claude. Research is a starting point, not a send list. This is a demo run: the workflow is the point, and the verdicts below are inputs to a human call, not the call itself.
+
+The question this run frames: standing up an EMEA presence from zero, where does the base sit, and where does event investment focus first — London, Paris, Amsterdam or Munich?
 
 ## Ranking
 
@@ -11,9 +13,11 @@ Built with Exa search + Claude. Research is a starting point, not a send list.
 | **Munich** | Good but narrow: BMW Group alone supplies three separate named AI/GenAI procurement leads (Team Lead IT Purchasing, Head of GenAI Purchasing, Head of Procurement IT), plus a Munich Re category manager. Deep bench at one account (BMW) rather than a broad market — general answer frames Munich as an industrial/manufacturing AI node, a different buyer profile (OT/manufacturing) than a pure AI-platform/search play. | Busiest AI conference calendar in the research: Cloud Native Summit, MCML AI Day, Agentic Web Week (three conferences merged). Volume is there, though several skew academic/developer rather than enterprise-buyer. | DACH norms are explicit and specific: highly structured, agenda-driven, pre-read expected, punctuality strict, departures from agenda read as poor planning — favors a tightly scripted roundtable over an open-format dinner. | **Third — account-based bet, not a market bet.** Justifies a single high-touch BMW-anchored roundtable, not broad city investment. |
 | **Paris** | Weakest fit for this segment: five named buyers, but titles are IT/software/telecom procurement (BNP Paribas, Capgemini, Crédit Agricole, Dassault) — one Capgemini buyer's remit explicitly lists GenAI suppliers (Microsoft, OpenAI, Anthropic, Mistral, GitLab), the only direct AI-platform signal in the Paris set. General answer positions Paris around deeptech/regulated innovation, not enterprise AI-platform buying specifically. | Large events (VivaTech 15,000 startups, Devoxx France ~5,000, dotAI) but skew startup/developer/general-tech rather than enterprise procurement — harder to get buyer-title attendees in the room. | French norms are explicit: centralized/top-down authority, high formality, meetings as intellectual debate, credibility built on logic and presentation quality — a well-argued roundtable could work, but research gives no direct evidence of AI-platform buyer turnout at existing events. | **Fourth.** Real market, but thinnest buyer-title evidence for this specific segment; hold for now. |
 
-## Recommendation
+## What this run suggests
 
-**London gets the quarter's primary investment**, built around a hosted dinner timed near an existing anchor (AI Summit London or AI Native DevCon, both June) rather than a standalone booth. The research shows the deepest bench of senior, cross-industry AI/cloud procurement titles (GSK, Microsoft, Dyson) and a market that has explicitly moved toward fewer, higher-spend, purpose-led events — a dinner for 15-20 named accounts converts better here than a crowded expo floor, and gives sales a tight target list to work into pipeline before and after.
+**On the base question, the evidence points at London** — it's where the deepest cross-industry buyer bench, the densest AI-native anchor calendar, and the format norms all line up, so it reads as the natural seat for an EMEA operation as well as the first events market.
+
+**On events focus, London would take the quarter's primary investment**, built around a hosted dinner timed near an existing anchor (AI Summit London or AI Native DevCon, both June) rather than a standalone booth. The research shows the deepest bench of senior, cross-industry AI/cloud procurement titles (GSK, Microsoft, Dyson) and a market that has explicitly moved toward fewer, higher-spend, purpose-led events — a dinner for 15-20 named accounts converts better here than a crowded expo floor, and gives sales a tight target list to work into pipeline before and after.
 
 **Amsterdam gets the second slot, as a roundtable tied to AGNTCon+MCPCon Europe** (Sept, agentic-AI-infrastructure-specific — the single most on-thesis conference in the entire dataset for a search/platform vendor). The buyer evidence is narrower than London's — concentrated in Booking.com and ING — so the format should be a smaller, curated roundtable riding the conference's existing draw rather than a self-funded standalone event, keeping cost proportional to the evidence.
 
