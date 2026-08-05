@@ -1,6 +1,6 @@
 # field-agent
 
-Field-marketing research, run by agents on [Exa](https://exa.ai) search. One line in, one sourced briefing pack out. Nothing ever sends.
+Ask a field-marketing question in one line — which city, which competitors' events, which accounts, who should be in the room. Agents research it on [Exa](https://exa.ai) and write back a sourced brief. It only ever researches; it never contacts anyone.
 
 ## The demos
 
