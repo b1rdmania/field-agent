@@ -26,7 +26,7 @@ python3 field_agent.py playbook london
 | `brief` | one person or company | pre-meeting dossier: live signals with sources, three specific openers, handle-with-care |
 | `playbook` | a market's accumulated packs | the doc a next hire inherits instead of starting from zero: what we know, what worked, vendor notes, open questions, standing checklists |
 
-Another sample: [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
+More samples: [which market gets next quarter — London, Paris, Amsterdam or Munich](out/sample-market-emea.md), ranked with a pipeline rationale, format calls per local norms, and what would change the call. And [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
 
 ## How it works
 
