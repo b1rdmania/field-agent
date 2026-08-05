@@ -21,10 +21,10 @@ python3 field_agent.py playbook london
 | Command | In | Out |
 |---|---|---|
 | `competitors` | a company or space | competitive set split direct/adjacent, dated recent moves with a "so what" each, positioning read, white space |
-| `market` | a buyer segment + candidate cities | ranked memo: where to invest next quarter, with a pipeline rationale and what would change the call |
+| `market` | a buyer segment + candidate cities | ranked memo: which market deserves the next quarter's investment, with a pipeline rationale and the evidence that would change the call |
 | `expand` | seed accounts | tiered lookalike accounts via neural search + `findSimilar`, with region checks and disqualifications by name |
 | `brief` | one person or company | pre-meeting dossier: live signals with sources, three specific openers, handle-with-care |
-| `playbook` | a market's accumulated packs | the inheritable doc: what we know, what worked, open questions, standing checklists |
+| `playbook` | a market's accumulated packs | the doc a next hire inherits instead of starting from zero: what we know, what worked, vendor notes, open questions, standing checklists |
 
 Another sample: [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
 
@@ -75,10 +75,10 @@ The same machinery pointed at field events, because research that never becomes 
 
 | Command | What it does |
 |---|---|
-| `guests` | account-based seat map: target accounts in, who-sits-where and why-now out ([sample](out/sample-guest-map-london.md)) |
-| `dinner` | cold-start guest discovery for a new market, invites and run of show included ([sample](out/sample-brief-london.md)) |
-| `venues` | private-dining shortlist with cited minimum-spend anchors and a walkthrough checklist ([sample](out/sample-venues-london.md)) |
-| `followup` | post-event queue, drafts, CRM handoff notes, lawful-basis note |
+| `guests` | account-based seat map: target accounts in, who-sits-where and why-now out, with the notes a seller needs to turn the conversation into a next meeting ([sample](out/sample-guest-map-london.md)) |
+| `dinner` | cold-start guest discovery for a new market, invites and run of show included — with the 4pm checks before a 6pm start ([sample](out/sample-brief-london.md)) |
+| `venues` | private-dining shortlist with minimum-spend anchors cited in local currency and a walkthrough checklist ([sample](out/sample-venues-london.md)) |
+| `followup` | post-event queue, drafts, CRM handoff notes, GDPR consent and lawful-basis notes |
 
 ## Data handling
 
