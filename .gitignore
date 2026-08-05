@@ -7,3 +7,7 @@ out/brief-*.md
 accounts*.txt
 attendees*.txt
 __pycache__/
+
+# real run output stays out; only redacted samples commit
+out/*
+!out/sample-*.md

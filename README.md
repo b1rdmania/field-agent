@@ -1,6 +1,6 @@
 # field-agent
 
-GTM research pipelines on [Exa](https://exa.ai) search. One line in, one sourced markdown briefing pack out. Nothing ever sends.
+Field marketing runs on research: which city deserves the next event, who should be in the room, what the market is doing, what happens after. That research is most of the work and almost none of the craft. field-agent automates it on [Exa](https://exa.ai) search — one line in, one sourced markdown briefing pack out. Nothing ever sends.
 
 **The proof run: [Exa's own competitive landscape, built on Exa's API](out/sample-competitors-exa.md).** One command produced the competitive set split direct/adjacent, dated moves with a "so what" each, a positioning read, and the gaps a human should close. Two rows from it:
 
@@ -8,15 +8,19 @@ GTM research pipelines on [Exa](https://exa.ai) search. One line in, one sourced
 >
 > **Tavily acquired by Nebius, $275M initial** — Feb 10, 2026. *So what:* removes the most direct cloud-agnostic independent competitor as a standalone company, and narrows the "independent search API" positioning to Exa and a shrinking few.
 
+More samples: [which market gets next quarter — London, Paris, Amsterdam or Munich](out/sample-market-emea.md), ranked with a pipeline rationale, format calls per local norms, and what would change the call. And [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
+
+## Usage
+
 ```bash
 python3 field_agent.py competitors "Acme (acme.com, payments infrastructure)"
-python3 field_agent.py market "AI platform buyers" --cities London,Paris,Munich
+python3 field_agent.py market "AI platform buyers" --cities London,Paris,Amsterdam,Munich
 python3 field_agent.py expand accounts.txt --market EMEA
 python3 field_agent.py brief "Jane Doe, Checkout.com"
 python3 field_agent.py playbook london
 ```
 
-## Core pipelines
+## The commands
 
 | Command | In | Out |
 |---|---|---|
@@ -25,8 +29,6 @@ python3 field_agent.py playbook london
 | `expand` | seed accounts | tiered lookalike accounts via neural search + `findSimilar`, with region checks and disqualifications by name |
 | `brief` | one person or company | pre-meeting dossier: live signals with sources, three specific openers, handle-with-care |
 | `playbook` | a market's accumulated packs | the doc a next hire inherits instead of starting from zero: what we know, what worked, vendor notes, open questions, standing checklists |
-
-More samples: [which market gets next quarter — London, Paris, Amsterdam or Munich](out/sample-market-emea.md), ranked with a pipeline rationale, format calls per local norms, and what would change the call. And [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
 
 ## How it works
 
@@ -38,7 +40,18 @@ flowchart LR
     D --> P["playbook\naccumulates per market"]
 ```
 
-Every command runs the same two stages. Exa gathers: `/search` with category and date filters for companies, people and fresh signals, `/findSimilar` for lookalikes, `/answer` for cited questions. Claude qualifies hard: every claim grounded in source text, inference marked as inference, junk cut with reasons. Every pack ends with a gaps section — what the research could not establish and where a human digs next. When the research is bad, the pack says so: the qualify stage returns an empty table with a diagnosis rather than a confident list of noise.
+Two stages, every command. Exa gathers: `/search` with category and date filters, `/findSimilar` for lookalikes, `/answer` for cited questions. Claude qualifies: every claim grounded in source text, inference marked as inference, junk cut with reasons. Every pack ends with a gaps section — what the research could not establish and where a human digs next. When the research is bad, the pack says so instead of dressing up noise.
+
+## Event add-ons
+
+The same machinery pointed at field events, because research that never becomes a room is just reading:
+
+| Command | What it does |
+|---|---|
+| `guests` | account-based seat map: target accounts in, who-sits-where and why-now out, with the notes a seller needs to turn the conversation into a next meeting ([sample](out/sample-guest-map-london.md)) |
+| `dinner` | cold-start guest discovery for a new market, invites and run of show included — with the 4pm checks before a 6pm start ([sample](out/sample-brief-london.md)) |
+| `venues` | private-dining shortlist with minimum-spend anchors cited in local currency and a walkthrough checklist ([sample](out/sample-venues-london.md)) |
+| `followup` | post-event queue, drafts, CRM handoff notes, GDPR consent and lawful-basis notes |
 
 ## Setup
 
@@ -68,17 +81,6 @@ field-agent competitors
 - Never contacts anyone — every pack is a brief for a human, not an outbound campaign
 - Doesn't read your CRM; the gaps sections tell you what to check with the account owner instead
 - Doesn't find email addresses, and isn't trying to
-
-## Event add-ons
-
-The same machinery pointed at field events, because research that never becomes a room is just reading:
-
-| Command | What it does |
-|---|---|
-| `guests` | account-based seat map: target accounts in, who-sits-where and why-now out, with the notes a seller needs to turn the conversation into a next meeting ([sample](out/sample-guest-map-london.md)) |
-| `dinner` | cold-start guest discovery for a new market, invites and run of show included — with the 4pm checks before a 6pm start ([sample](out/sample-brief-london.md)) |
-| `venues` | private-dining shortlist with minimum-spend anchors cited in local currency and a walkthrough checklist ([sample](out/sample-venues-london.md)) |
-| `followup` | post-event queue, drafts, CRM handoff notes, GDPR consent and lawful-basis notes |
 
 ## Data handling
 
