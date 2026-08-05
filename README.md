@@ -1,6 +1,12 @@
 # field-agent
 
-GTM research pipelines on [Exa](https://exa.ai) search: competitive landscapes, market focus, account expansion, target dossiers — and the playbook that accumulates what the research learns. Each command is one line in, one sourced markdown briefing pack out. Nothing ever sends.
+GTM research pipelines on [Exa](https://exa.ai) search. One line in, one sourced markdown briefing pack out. Nothing ever sends.
+
+**The proof run: [Exa's own competitive landscape, built on Exa's API](out/sample-competitors-exa.md).** One command produced the competitive set split direct/adjacent, dated moves with a "so what" each, a positioning read, and the gaps a human should close. Two rows from it:
+
+> **Firecrawl ships a custom relevance model on `/search`, claims 94.7% SimpleQA and undercuts Exa/Tavily on price** — Jul 22, 2026. *So what:* the accuracy-vs-cost tradeoff that used to favour Exa on quality is being contested directly, on Exa's own turf — GTM should have a ready answer on why raw-index retrieval beats a paragraph-relevance model, not just an accuracy number.
+>
+> **Tavily acquired by Nebius, $275M initial** — Feb 10, 2026. *So what:* removes the most direct cloud-agnostic independent competitor as a standalone company, and narrows the "independent search API" positioning to Exa and a shrinking few.
 
 ```bash
 python3 field_agent.py competitors "Acme (acme.com, payments infrastructure)"
@@ -20,18 +26,7 @@ python3 field_agent.py playbook london
 | `brief` | one person or company | pre-meeting dossier: live signals with sources, three specific openers, handle-with-care |
 | `playbook` | a market's accumulated packs | the inheritable doc: what we know, what worked, open questions, standing checklists |
 
-The proof run: [Exa's own competitive landscape, built with Exa's API](out/sample-competitors-exa.md). It separates direct rivals from noise, dates the consequential moves (a competitor's acquisition, a rival's benchmark attack on price), reads positioning from the players' own launch posts, and flags which claims need primary sourcing before anyone repeats them. Other samples: [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
-
-## Event add-ons
-
-The same machinery pointed at field events, because research that never becomes a room is just reading:
-
-| Command | What it does |
-|---|---|
-| `guests` | account-based seat map: target accounts in, who-sits-where and why-now out ([sample](out/sample-guest-map-london.md)) |
-| `dinner` | cold-start guest discovery for a new market, invites and run of show included ([sample](out/sample-brief-london.md)) |
-| `venues` | private-dining shortlist with cited minimum-spend anchors and a walkthrough checklist ([sample](out/sample-venues-london.md)) |
-| `followup` | post-event queue, drafts, CRM handoff notes, lawful-basis note |
+Another sample: [account expansion](out/sample-expand-emea.md) — two fintech seeds → Starling, Revolut, Swan, Aevi, tiered, with shrinking shells disqualified.
 
 ## How it works
 
@@ -73,6 +68,17 @@ field-agent competitors
 - Never contacts anyone — every pack is a brief for a human, not an outbound campaign
 - Doesn't read your CRM; the gaps sections tell you what to check with the account owner instead
 - Doesn't find email addresses, and isn't trying to
+
+## Event add-ons
+
+The same machinery pointed at field events, because research that never becomes a room is just reading:
+
+| Command | What it does |
+|---|---|
+| `guests` | account-based seat map: target accounts in, who-sits-where and why-now out ([sample](out/sample-guest-map-london.md)) |
+| `dinner` | cold-start guest discovery for a new market, invites and run of show included ([sample](out/sample-brief-london.md)) |
+| `venues` | private-dining shortlist with cited minimum-spend anchors and a walkthrough checklist ([sample](out/sample-venues-london.md)) |
+| `followup` | post-event queue, drafts, CRM handoff notes, lawful-basis note |
 
 ## Data handling
 
