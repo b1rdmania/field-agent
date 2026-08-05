@@ -364,6 +364,61 @@ Raw search research as JSON:
     write_pack(slugify("competitors", t), f"Competitive landscape - {t}", synthesise(prompt))
 
 
+def cmd_events(key, args):
+    comps = [c.strip() for c in args.competitors.split(",") if c.strip()]
+    region = args.region
+    queries = []
+    for comp in comps:
+        queries.append((comp, f"{comp} hosted dinner, roundtable, meetup, hackathon or conference sponsorship {region}", None, 4, "2026-01-01"))
+    queries += [
+        ("calendar", f"AI infrastructure and developer platform conferences {region} 2026 sponsors exhibitors", None, 6, "2026-01-01"),
+        ("formats", f"AI company executive dinner or roundtable series for enterprise buyers {region}", None, 4, "2025-10-01"),
+    ]
+    pool = gather(key, queries)
+    answers = ask(key, [
+        f"What events have {', '.join(comps)} run, hosted or sponsored in {region} in 2026, and in what formats?",
+        f"Which {region} conferences in 2026 attract enterprise AI platform buyers, and which AI infrastructure vendors are visibly present?",
+    ])
+    print(f"  {len(pool)} signals gathered, synthesising...")
+    prompt = f"""{EXA_CONTEXT}
+
+Task: a competitor events radar for {region}, written for a field marketer
+deciding where to show up next. The competitive set: {', '.join(comps)}.
+Analyst tone: factual, sourced, no trash talk.
+
+Produce markdown with exactly these sections:
+
+## The radar
+A table: Competitor | Event footprint found | Format | Where | Source.
+One row per competitor in the set. "No public event footprint found in this
+research" is a real finding - state it plainly rather than padding. Only
+events the research actually supports, each with a date where the source
+gives one.
+
+## The calendar
+The {region} anchor events this research surfaced, dated, newest first,
+each with who from the competitive set is visibly present and its source
+URL. Conferences only count if the research shows the buyer audience, not
+just the name.
+
+## The read
+Two short paragraphs: what the set's event behaviour says about how this
+category does field marketing in {region}, and where the white space is -
+formats, cities or audiences nobody in the set occupies. Ground every claim;
+mark inference as inference. If the footprints are thin, say what THAT
+means rather than inventing presence.
+
+## Gaps
+What this research could not establish and where a human should dig next.
+
+Cited answers from Exa's answer API:
+{json.dumps(answers, indent=1)}
+
+Raw search research as JSON:
+{json.dumps(pool, indent=1)}"""
+    write_pack(slugify("events", region), f"Competitor events radar - {region}", synthesise(prompt))
+
+
 def cmd_brief(key, args):
     target = args.target
     queries = [
@@ -562,6 +617,10 @@ def main():
     c = sub.add_parser("competitors", help="competitive landscape for a company or space")
     c.add_argument("target")
 
+    ev = sub.add_parser("events", help="competitor events radar for a region")
+    ev.add_argument("--competitors", required=True, help='comma list: "Tavily, Firecrawl, Perplexity"')
+    ev.add_argument("--region", default="EMEA")
+
     e = sub.add_parser("expand", help="findSimilar lookalikes from seed accounts")
     e.add_argument("accounts", help="file: one account name per line")
     e.add_argument("--market", default="EMEA")
@@ -595,8 +654,8 @@ def main():
     args = ap.parse_args()
     key = load_key()
     print(f"field-agent {args.cmd}")
-    {"market": cmd_market, "competitors": cmd_competitors, "expand": cmd_expand, "guests": cmd_guests,
-     "brief": cmd_brief, "venues": cmd_venues, "dinner": cmd_dinner,
+    {"market": cmd_market, "competitors": cmd_competitors, "events": cmd_events, "expand": cmd_expand,
+     "guests": cmd_guests, "brief": cmd_brief, "venues": cmd_venues, "dinner": cmd_dinner,
      "followup": cmd_followup, "playbook": cmd_playbook}[args.cmd](key, args)
 
 
