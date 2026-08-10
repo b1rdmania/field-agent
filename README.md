@@ -6,6 +6,10 @@ Ask a field-marketing question in one line — which city, which competitors' ev
 
 **Where is the competition actually showing up in EMEA — and where's the white space?** One command tracked six competitors' event footprints across the region → **[the events radar](out/sample-events-emea.md)**. What it found: dated sponsorships and exhibits for three of them, a plainly-stated zero for the other three, the anchor calendar with who's present at each — and the white space: nobody in the set runs a small-room executive format in EMEA, and at least one confirmed enterprise-buyer conference has no competitor present at all. The competitive set itself came from [a landscape run on Exa's own API](out/sample-competitors-exa.md) — identify the set, then track their rooms.
 
+**Who owns the words this category uses, and which ones are still unclaimed?** One command read the stages instead of the floor plans → **[the narrative radar](out/sample-narrative-ai-search-emea.md)**. What it found: "agent-native search API" is not yet a named category on any independent stage, even while Microsoft and Google visibly cede the space - and the thing that would make it one is an operator, not a vendor, standing up with production numbers. Two more unclaimed themes with real operator evidence behind them and nobody credible attached.
+
+**How do you own a week you are already attending?** One command mapped the unofficial programme around AI Summit London → **[the fringe map](out/sample-sidebar-ai-summit-london.md)**. Named partner dinners, one pre-summit fringe talk, an afterparty - and the honest read that this is a floor-heavy event with a thin fringe, so a complement works and a competing draw does not.
+
 **Where does an EMEA base sit, and which market gets event investment first?** One command ranked London, Paris, Amsterdam and Munich on buyer density, anchor calendar and local event norms → **[the market memo](out/sample-market-emea.md)**. The evidence points at London as the base and the first events market — and the memo says why, what format fits each city, and what would change the call.
 
 **Who sits where, and why?** [An account-based guest map](out/sample-guest-map-london.md) with a why-this-seat note a seller can use, [a private-dining shortlist](out/sample-venues-london.md) with minimum spends cited in local currency, and [a cold-start dinner brief](out/sample-brief-london.md) with invites and the run of show — including the 4pm checks before a 6pm start. Plus [tiered lookalike accounts](out/sample-expand-emea.md) from two seeds, shrinking shells disqualified by name.
@@ -17,6 +21,8 @@ These are demo runs, committed to show what the workflows produce. The verdicts 
 | Command | What comes back |
 |---|---|
 | `events` | competitor events radar for a region: footprints per competitor, the anchor calendar with who's present, and the white space |
+| `narrative` | what the category says on stage, who has annexed which phrase, and which themes have operator pull but nobody credible attached |
+| `sidebar` | the unofficial programme around one anchor conference: the fringe, the contested slots, and where a room still fits |
 | `market` | which market deserves the next quarter's investment, with a pipeline rationale and the evidence that would change the call |
 | `competitors` | competitive set, dated moves with so-whats, positioning, white space — the radar's input |
 | `expand` | tiered lookalike accounts via neural search, disqualifications by name |

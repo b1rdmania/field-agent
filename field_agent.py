@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """field-agent: a field marketing job spec, implemented.
 
-Eight commands covering the field-marketing loop for one person running a
+Ten commands covering the field-marketing loop for one person running a
 region, all built on Exa search (/search, /findSimilar, /answer):
 
   market    which cities deserve the next event, with evidence
@@ -419,6 +419,136 @@ Raw search research as JSON:
     write_pack(slugify("events", region), f"Competitor events radar - {region}", synthesise(prompt))
 
 
+def cmd_narrative(key, args):
+    """Which words a category is putting on stage, and who owns them."""
+    themes = [t.strip() for t in args.themes.split(",") if t.strip()] if args.themes else []
+    comps = [c.strip() for c in args.competitors.split(",") if c.strip()] if args.competitors else []
+    cat, region = args.category, args.region  # category defaults to Exa's
+    queries = [
+        ("agendas", f"{cat} conference 2026 {region} agenda keynote session titles", None, 8, "2025-11-01"),
+        ("stages", f"{cat} keynote speaker announcement {region} 2026", None, 6, "2025-11-01"),
+        ("emerging", f"what is changing in {cat} 2026 analysts and operators", None, 6, "2026-01-01"),
+    ]
+    for t in themes:
+        queries.append((t, f'"{t}" {cat} conference panel keynote 2026', None, 5, "2025-11-01"))
+    for comp in comps:
+        queries.append((comp, f"{comp} positioning messaging what they say they are 2026", None, 3, "2025-11-01"))
+    pool = gather(key, queries)
+    qs = [f"Which themes and phrases dominate {cat} conference agendas in {region} in 2026?"]
+    if themes:
+        qs.append(f"Who is publicly associated with the phrases {', '.join(themes)} in {cat}, and where have they said it?")
+    answers = ask(key, qs)
+    print(f"  {len(pool)} signals gathered, synthesising...")
+    seeded = f"Themes to test specifically: {', '.join(themes)}." if themes else "No themes seeded - surface them from the research."
+    watched = f"Companies to watch: {', '.join(comps)}." if comps else ""
+    prompt = f"""{EXA_CONTEXT}
+
+Task: a narrative radar for {cat} in {region}. Not where competitors show up -
+what the category is SAYING, and who has annexed which words. Written for a
+field marketer deciding what a room should be about. {seeded} {watched}
+Analyst tone: factual, sourced. Language is cheap and vendors repeat each
+other, so be hard about the difference between a phrase with buyers and
+evidence behind it and a phrase that is only vendor marketing.
+
+Produce markdown with exactly these sections:
+
+## The themes
+A table: Theme | Who is putting it on stage | Where and when | Rising, steady
+or fading | Source. Only themes the research supports, each with a dated
+instance. Rising/fading is an inference - mark it as one.
+
+## Who owns what
+Which company has effectively annexed which phrase, and how firmly. A phrase
+one vendor says once is not owned. A phrase carried by a named recurring
+format, a keynote slot or a series is. Say which of the two each case is,
+and name the format doing the work.
+
+## Unclaimed
+Themes that show up in operator, analyst or buyer conversation in the
+research but are absent from stages - or present on stages with nobody
+credible attached. This is the section that matters most. For each, say what
+evidence suggests demand, and what would have to be true for it to carry a
+room rather than a panel.
+
+## The read
+Two short paragraphs: where this category's language is actually moving, and
+the honest risk that a theme is vendor noise rather than buyer pull. If the
+research cannot separate the two, say so rather than picking.
+
+## Gaps
+What this could not establish and where a human digs next.
+
+Cited answers from the answer API:
+{json.dumps(answers, indent=1)}
+
+Raw search research as JSON:
+{json.dumps(pool, indent=1)}"""
+    write_pack(slugify("narrative", cat, region), f"Narrative radar - {cat}, {region}", synthesise(prompt))
+
+
+def cmd_sidebar(key, args):
+    """The unofficial programme around one anchor conference."""
+    ev, city = args.event, args.city
+    comps = [c.strip() for c in args.competitors.split(",") if c.strip()] if args.competitors else []
+    queries = [
+        ("side", f"{ev} side events satellite parties fringe programme {city}", None, 8, "2025-11-01"),
+        ("hosts", f"who hosts private dinners and invite-only events during {ev}", None, 6, "2025-11-01"),
+        ("venues", f"private event venues walking distance from {ev} venue {city}", None, 5, None),
+        ("attendees", f"{ev} who attends seniority buyer profile agenda", None, 4, "2025-11-01"),
+    ]
+    for c in comps:
+        queries.append((c, f"{c} {ev} side event dinner party breakfast", None, 3, "2025-11-01"))
+    pool = gather(key, queries)
+    answers = ask(key, [
+        f"What unofficial side events, private dinners and fringe programming happen around {ev} in {city}?",
+        f"Who actually attends {ev}, and at what seniority?",
+    ])
+    print(f"  {len(pool)} signals gathered, synthesising...")
+    watched = f"Competitors to check for: {', '.join(comps)}." if comps else ""
+    prompt = f"""{EXA_CONTEXT}
+
+Task: map the unofficial programme around {ev} in {city} - the week, not the
+floor. Written for a field marketer who is already going and wants the week to
+produce meetings rather than badge scans. {watched}
+Analyst tone: factual, sourced. Do not invent events.
+
+Produce markdown with exactly these sections:
+
+## The fringe
+A table: What | Who runs it | Format | When in the week | Source. Everything
+the research supports that happens around the conference but is not on the
+official agenda. Dated where a source gives a date.
+
+## The shape of the week
+When the buyer's attention is actually available. Which slots are contested
+(everyone runs a party), which are open. Ground this in what the research
+shows about the official agenda's rhythm - keynote mornings, expo hours,
+the night the big party happens - rather than assuming. Mark inference.
+
+## Where a room fits
+Two or three specific slots worth taking, each with the reason it is open and
+the format that suits it. Be concrete about time of day. If the honest answer
+is that every good slot is taken, say that instead of inventing a gap.
+
+## Logistics that decide it
+Venue proximity, walking distance, the practical constraints the research
+surfaced. Cost anchors only if a source gives one - never estimate a price.
+
+## The read
+One paragraph: whether this conference rewards a fringe play at all, or
+whether the attention is genuinely on the floor.
+
+## Gaps
+What this could not establish and where a human digs next.
+
+Cited answers from the answer API:
+{json.dumps(answers, indent=1)}
+
+Raw search research as JSON:
+{json.dumps(pool, indent=1)}"""
+    write_pack(slugify("sidebar", ev), f"Fringe map - {ev}, {city}", synthesise(prompt))
+
+
 def cmd_brief(key, args):
     target = args.target
     queries = [
@@ -621,6 +751,17 @@ def main():
     ev.add_argument("--competitors", required=True, help='comma list: "Tavily, Firecrawl, Perplexity"')
     ev.add_argument("--region", default="EMEA")
 
+    nr = sub.add_parser("narrative", help="what the category says on stage, and who owns which words")
+    nr.add_argument("--category", default="AI search and retrieval infrastructure")
+    nr.add_argument("--region", default="EMEA")
+    nr.add_argument("--themes", default="", help='comma list of phrases to test')
+    nr.add_argument("--competitors", default="", help="comma list whose messaging to read")
+
+    sb = sub.add_parser("sidebar", help="the unofficial programme around one anchor conference")
+    sb.add_argument("event", help='e.g. "AI Summit London"')
+    sb.add_argument("--city", required=True)
+    sb.add_argument("--competitors", default="", help="comma list to check for in the fringe")
+
     e = sub.add_parser("expand", help="findSimilar lookalikes from seed accounts")
     e.add_argument("accounts", help="file: one account name per line")
     e.add_argument("--market", default="EMEA")
@@ -656,7 +797,8 @@ def main():
     print(f"field-agent {args.cmd}")
     {"market": cmd_market, "competitors": cmd_competitors, "events": cmd_events, "expand": cmd_expand,
      "guests": cmd_guests, "brief": cmd_brief, "venues": cmd_venues, "dinner": cmd_dinner,
-     "followup": cmd_followup, "playbook": cmd_playbook}[args.cmd](key, args)
+     "followup": cmd_followup, "playbook": cmd_playbook,
+     "narrative": cmd_narrative, "sidebar": cmd_sidebar}[args.cmd](key, args)
 
 
 if __name__ == "__main__":
