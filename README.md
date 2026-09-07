@@ -2,6 +2,8 @@
 
 Field marketing research on [Exa](https://exa.ai). Three tools. Each one takes a question, searches Exa, checks the results, and writes a report with sources. None of them contact anyone.
 
+The tools work from the sales team's target list and customer list. They do not replace it. If no list exists yet, the same tools can help build one.
+
 ## 1. Events radar
 
 Where do the competitors run events in a region, and where is the gap?
@@ -19,7 +21,9 @@ python3 field_agent.py events --competitors "Tavily, Firecrawl, Perplexity" --re
 
 Which companies in a region look like the current customers, and which cities have most of them?
 
-Input: a list of current customers (`customers.txt` has seven public ones) and a region.
+This tool needs the sales team's customer list and US target list as input. The sample uses seven public customers (`customers.txt`) because that is what is public.
+
+Input: a list of customers or target accounts, and a region.
 Output: the companies in the region that match, with city, the customer they mirror, what they build, why they fit and the source. Then the count per city. Then where the mirror breaks: customer types with no local match, and local clusters with no US precedent. Companies only. No people.
 
 ```bash
