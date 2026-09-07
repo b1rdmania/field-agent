@@ -21,12 +21,12 @@ python3 field_agent.py events --competitors "Tavily, Firecrawl, Perplexity" --re
 
 Which companies in a region look like the current customers, and which cities have most of them?
 
-This tool needs the sales team's customer list and US target list as input. The sample uses seven public customers (`customers.txt`) because that is what is public.
+This tool needs the sales team's customer list and US target list as input. The sample uses six public customers (`customers.txt`) because that is what is public. Each line is the customer and what it sells.
 
 Input: a list of customers or target accounts, and a region.
 Output: the companies in the region that match, with city, the customer they mirror, what they build, why they fit and the source. Then the count per city. Then where the mirror breaks: customer types with no local match, and local clusters with no US precedent. Companies only. No people.
 
-Report: [the customer mirror, EMEA](out/sample-mirror-emea.md). Twenty-four companies across Munich, Berlin, London, Paris and Zürich. The break: no EMEA twin for Cursor. The report flags one profile that looks out of date.
+Report: [the customer mirror, EMEA](out/sample-mirror-emea.md). Thirty companies, each with 2025 or 2026 activity and a source. London is the largest node, then Munich, Paris, Helsinki and Vilnius. Lovable and CodeRabbit mirror Cursor. Brevo and Attio mirror HubSpot. DeepJudge, Jus Mundi, Crimson and Solomonic mirror WhyHow. The break: no EMEA company yet matches Cognition or 11x for scale.
 
 ```bash
 python3 field_agent.py mirror customers.txt --region EMEA

@@ -421,10 +421,13 @@ Raw search research as JSON:
 
 
 def cmd_mirror(key, args):
-    """EMEA companies that mirror the existing (US) customer base."""
-    seeds = read_lines(args.seeds)
+    """The region's mirror of the existing customer base."""
     region = args.region
-    stems = ["".join(c for c in a.lower() if c.isalnum()) for a in seeds]
+    seeds = []
+    for line in read_lines(args.seeds):
+        name, _, desc = line.partition(":")
+        seeds.append((name.strip(), desc.strip() or name.strip()))
+    stems = ["".join(c for c in n.lower() if c.isalnum()) for n, _ in seeds]
     pool, seen = [], set()
 
     def keep(seed, r, how):
@@ -436,54 +439,67 @@ def cmd_mirror(key, args):
             return
         seen.add(url)
         pool.append({"mirrors": seed, "how": how, "title": r.get("title"), "url": url,
-                     "text": (r.get("text") or "")[:700]})
+                     "published": r.get("publishedDate"), "text": (r.get("text") or "")[:700]})
 
-    for seed in seeds:
-        q = f"company like {seed} headquartered in {region}: same kind of product, same kind of buyer"
-        print(f"  exa search: [{seed}] {q}")
+    for name, desc in seeds:
+        for how, q, cat, num, since in (
+            ("company", f"{desc}, company headquartered in {region}", "company", args.per_seed, None),
+            ("funding news", f"{region} startup building {desc} raises funding round", None, 6, "2025-01-01"),
+            ("coverage", f"best-known {region} alternatives to {name}: {desc}", None, 5, "2025-06-01"),
+        ):
+            print(f"  exa search: [{name}/{how}] {q}")
+            try:
+                for r in exa_search(key, q, num, cat, since):
+                    keep(name, r, how)
+            except Exception as e:
+                print(f"  ! search failed for {name}: {e}")
         try:
-            for r in exa_search(key, q, args.per_seed, "company"):
-                keep(seed, r, "search")
-        except Exception as e:
-            print(f"  ! search failed for {seed}: {e}")
-        try:
-            url = resolve_homepage(key, seed)
-            print(f"  exa findSimilar: {seed} ({url})")
+            url = resolve_homepage(key, name)
+            print(f"  exa findSimilar: {name} ({url})")
             for r in exa_similar(key, url, args.per_seed):
-                keep(seed, r, "findSimilar")
+                keep(name, r, "findSimilar")
         except Exception as e:
-            print(f"  ! findSimilar failed for {seed}: {e}")
+            print(f"  ! findSimilar failed for {name}: {e}")
     answers = ask(key, [
-        f"Which {region} cities have the densest clusters of companies building AI agents, AI coding tools, or AI-native software in 2026?",
-        f"Which {region} startups and scale-ups building AI products publicly use web search or retrieval APIs in their agents?",
-    ])
+        f"Which {region} companies are the best-known equivalents of {n} ({d})? Name the companies, their cities and their latest funding."
+        for n, d in seeds
+    ] + [f"Which {region} cities have the densest clusters of companies building AI agents and AI-native software in 2026?"])
     print(f"  {len(pool)} candidates gathered, synthesising...")
+    seed_list = "; ".join(f"{n} ({d})" for n, d in seeds)
     prompt = f"""{EXA_CONTEXT}
 
 Task: the existing customer base is mostly US software companies. Seeds:
-{', '.join(seeds)}. Find the {region} mirror of that base: the companies
-here that look like those customers - same kind of product, same kind of
-buyer. Companies only. Never name an individual.
+{seed_list}. Find the {region} mirror of that base: the companies here
+that look like those customers. Same kind of product, same kind of buyer.
+Companies only. Never name an individual.
+
+Rules for the table:
+- A company must be based in {region}, with HQ or a real engineering office.
+- A company must show activity in 2025 or 2026 in the source text: a
+  funding round, a product launch, a hiring page, a dated post. Exclude any
+  company the sources show as shut down or acquired and closed.
+- Prefer companies with named funding, named customers or a known product.
+  Put those first. A small studio or consultancy only stays if nothing
+  better mirrors that seed.
+- Cut consultancies, directories, media, listicles and junk, with no
+  commentary.
+- City must come from the source text. Write "unconfirmed" if it does not.
+- At most 30 rows.
 
 Produce markdown with exactly these sections:
 
 ## The mirror
-A table: Company | City | Mirrors | What they build | Why they fit | Source.
-Only companies the research supports as {region}-based (HQ or a real
-engineering office) and plausible buyers of a search API for agents. Cut
-consultancies, directories, media and junk hits, with no commentary.
-City must come from the source text; write "unconfirmed" if it does not.
+A table: Company | City | Mirrors | What they build | Evidence of activity | Source.
 
 ## Clusters
 A table: City | Companies in the mirror | Dominant type | Read.
-Then two or three sentences on what the clustering says about where field
-activity concentrates first and what format fits each cluster (developer
-room vs vertical room).
+Then two or three sentences on where field activity concentrates first and
+which format fits each cluster: a developer room or a vertical room.
 
 ## Where the mirror breaks
 Two short lists. Seed types with no {region} twin found in this research.
-{region} clusters with no seed precedent (a local pattern the US base
-does not show). Ground both in the research; mark inference as inference.
+{region} clusters with no seed precedent. Ground both in the research and
+mark inference as inference.
 
 ## Gaps
 What this research could not establish and what a human checks next.
@@ -1112,7 +1128,7 @@ def main():
     ev.add_argument("--region", default="EMEA")
 
     mi = sub.add_parser("mirror", help="the region's mirror of the existing customer base")
-    mi.add_argument("seeds", help="file: one existing customer per line")
+    mi.add_argument("seeds", help="file: one customer per line, as Name: what they sell and to whom")
     mi.add_argument("--region", default="EMEA")
     mi.add_argument("--per-seed", type=int, default=8)
 

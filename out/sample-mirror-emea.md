@@ -1,66 +1,74 @@
 # Customer mirror - EMEA
 
-Sample run, 7 September 2026, from the seven public customers in `customers.txt`.
+Sample run, 7 September 2026, from the six public customers in `customers.txt`.
 
 Built with Exa search + Claude. Research is a starting point, not a send list.
 
 ## The mirror
 
-| Company | City | Mirrors | What they build | Why they fit | Source |
+| Company | City | Mirrors | What they build | Evidence of activity | Source |
 |---|---|---|---|---|---|
-| ALYN AI | Düsseldorf, Germany | Cognition | Agentic AI systems for aerospace, defence and commercial growth. | It designs and operates outcome-based AI agents for high-stakes decisions, like Cognition builds agents for engineering work. | alynai.com |
-| Sapio | Höllviken och Ljunghusen, Sweden | Cognition | AI-powered strategic intelligence platform for leadership teams. | It turns market signals and reports into source-backed decisions, the same buyer motion as an agent lab serving business teams. | sapioapp.io |
-| Atira | Munich, Germany | Cognition | Sales engineering agents for complex hardware sales. | It builds industry-trained AI agents that replace spreadsheets, matching Cognition's agent-for-a-job model. | atira.ai |
-| Agnosphere | Munich, Germany | Cognition | Custom AI agents and deep-research pipelines for private equity and enterprise clients. | It is a Munich-based AI build studio shipping custom agents into client stacks, the closest EMEA match to an agent lab. | agnosphere.com |
-| Structury Sovereign Systems | Hünenberg, Switzerland | Cognition | Enterprise AI platform that routes cases through a digital twin of company workflows. | It builds AI agents that navigate organisational logic autonomously, the same agent-for-enterprise-process pattern. | structury.com |
-| ekory | Milan, Italy | Cognition | Knowledge Intelligence Platform that turns company documents into instant answers. | Its AI unifies and makes documents searchable, a direct retrieval use case for a search API. | ekory.ai |
-| Vantyx | Vimercate, Italy | Cognition | AI-native SaaS ecosystem for business process automation. | It calls itself an AI-native operating system that orchestrates business activity, matching Cognition's agent-native positioning. | vantyx.ai |
-| imagino | unconfirmed | HubSpot | Data-first AI-powered customer engagement and marketing platform. | It is an AI-powered CDP and marketing platform, the same product and buyer as HubSpot. | imagino.com |
-| Crono | London, United Kingdom | HubSpot | AI sales orchestration platform connecting the sales stack in one interface. | It calls itself "the Agentic Sales Engine" where AI agents work with sales teams, matching HubSpot's CRM buyer. | crono.one |
-| Upsales | Stockholm, Sweden | HubSpot | AI-driven platform that helps sales teams prioritise deals and grow revenue. | It uses AI recommendations to expand accounts and prioritise deals, the same revenue-platform buyer as HubSpot. | upsales.com |
-| Enobase | Ixelles, Brussels Region, Belgium | monday.com | AI-powered business application platform for finance, projects and core workflows. | It replaces fragmented tools and legacy ERPs with one AI-powered workspace, mirroring monday.com's work-OS pitch. | enobase.com |
-| keinsaas | Tallinn, Estonia | monday.com | Autonomous workflow builder for the European mid-market. | It describes itself as an AI company that builds, tests and deploys business processes from plain language, an agentic take on monday.com's category. | keinsaas.com |
-| Venta AI | München, Germany | 11x | AI employee that runs GDPR-compliant cold outreach for European sales teams. | It is an "AI employee" doing outbound sales work, the same digital-worker product as 11x. | getventa.ai |
-| Reece | London, United Kingdom | 11x | AI Account Executive that reads CRM, calls and inbox to decide the next sales move. | It is described as "The AI Account Executive," a direct match to 11x's autonomous sales-worker category. | getreece.ai |
-| EverReady.ai | Paris, France | 11x | Revenue Intelligence platform integrated with Salesforce that updates CRM data automatically. | It automates CRM record-keeping from sales conversations, the same revenue-automation buyer as 11x. | everready.ai |
-| Skeells | Paris, France | 11x | AI sales training and coaching platform. | It calls itself "the next-generation AI coach for sales performance," an AI-native sales tool like 11x's. | skeells.ai |
-| Scalera | Zürich, Switzerland | 11x | AI platform connecting contractors and suppliers to speed up construction tendering. | It is an AI platform automating a manual sales-adjacent process, the same automation pattern as 11x applied to a new vertical. | scalera.ai |
-| Vivaldi Technologies | Oslo, Norway | Mozilla Firefox | Web browser with customisation, privacy and performance features. | It is a standalone browser company, the direct EMEA product mirror of Firefox. | vivaldi.com |
-| Cliqz GmbH | Munich, Germany | Mozilla Firefox | Independent search engine, browser and privacy technology. | The source describes it as a European alternative to dominant US platforms, built around a search engine, directly mirroring Firefox's category. | cliqz.com |
-| eyeo | Berlin, Germany | Mozilla Firefox | Ad-blocking and tracker-blocking tools for browsers. | It builds browser-layer privacy tools serving the same browser ecosystem as Firefox. | eyeo.com |
-| SnowHaze | Zürich, Switzerland | Mozilla Firefox | Private browser with built-in VPN and anti-fingerprinting. | It is a self-financed independent browser, a direct product mirror of Firefox's privacy positioning. | snowhaze.com |
-| Ecosia | Berlin, Germany | Mozilla Firefox | Search engine that funds tree planting from ad revenue. | It is a standalone search engine with over 20 million users, a direct mirror of Firefox's search-adjacent category. | ecosia.org |
-| dossi | Copenhagen, Denmark | WhyHow | AI-powered intelligence systems for founders and CEOs of SMEs. | It builds AI systems that back strategic decisions with real information, the same knowledge-intelligence buyer as WhyHow. | dossiconsulting.com |
-| Northsea | Amsterdam, Netherlands | WhyHow | AI-native research platform for consultants, investors and strategy teams. | It generates customer insights faster than traditional research, the closest EMEA match to WhyHow's AI research and knowledge-graph work. | northsea.co |
+| CodeRabbit | London office, HQ San Francisco | Cursor | AI code review platform for AI-written code | $143M Series C, $1.5B valuation, 50 staff in London and the EU, doubling | https://thenextweb.com/news/coderabbit-raised-143m-to-read-the-code-ai-wrote |
+| Lovable | Stockholm | Cursor | AI app builder, vibe-coding platform | $400M Series C, $13.3B valuation | https://techfundingnews.com/lovable-raises-400m-at-13-3b-valuation-menlo-eqt/ |
+| Avrea | Helsinki | Cursor | AI-native CI/CD platform for AI-generated code | $4.7M pre-seed, emerged from stealth May 2026 | https://tech.eu/2026/05/26/avrea-emerges-from-stealth-with-47m-to-reinvent-cicd-for-the-ai-coding-era/ |
+| GitHits | Helsinki | Cursor | AI code search infrastructure for coding agents | €1.5M pre-seed, June 2026 | https://arcticstartup.com/githits-raises-e1-5m-pre-seed/ |
+| Codeplain | unconfirmed | Cursor | Turns plain-language specs into production code | $3M seed, June 2026 | https://gapminder.vc/gapminder-leads-3-million-seed-round-in-slovenian-ai-software-startup-codeplain-alongside-silicon-gardens/ |
+| iGent AI | London | Cognition | Maestro, autonomous agents for the software development lifecycle | $8.1M total funding, hiring page dated June 2026 | https://igent.ai/ |
+| Zeit AI | Munich | Cognition | Autonomous data engineering platform | €4.3M ($5M) funding, September 3 2026 | https://www.eu-startups.com/2026/09/yc-backed-zeit-ai-raises-e5-million-to-build-europes-autonomous-data-engineer/ |
+| CONXAI | Munich | Cognition | No-code agentic AI platform for engineering workflows | 27 employees, 3 prior funding rounds, page dated June 2026 | https://conxai.com/ |
+| Hermex | Warsaw | Cognition | AI platform that builds software as a full delivery team | Founded 2025, page dated June 2026 | https://hermex.dev/ |
+| Amigo | Vilnius | Cognition | AI software engineer agent that takes tickets and opens pull requests | Founded 2023, page dated June 2026 | https://amigotech.ai/ |
+| Brevo | Paris | HubSpot | All-in-one CRM and marketing automation platform | €500M ($583M) round, unicorn status, December 2025 | https://techcrunch.com/2025/12/03/new-unicorn-brevo-raises-583m-to-challenge-crm-giants/ |
+| Attio | London | HubSpot | AI-native CRM for go-to-market teams | $52M Series B, August 2025 | https://tech.eu/2025/08/26/attio-raises-52m-series-b-to-scale-crm-platform/ |
+| Zelara | Berlin | HubSpot | AI-native lifecycle marketing and customer engagement system | €3M funding round, reported June to August 2026 | https://tech.eu/2026/06/24/zelara-lands-eur3m-to-bring-continuous-learning-to-customer-engagement/ |
+| efficy CRM | Brussels | HubSpot | All-in-one CRM for enterprise data sovereignty | 238 employees, 13,500+ customers claimed, page dated June 2026 | https://efficy.com/ |
+| Birdsview | Leipzig | HubSpot | Avys, an AI email marketing agent for online stores | €2.5M seed round, July 2026 | https://startuprise.co.uk/birdsview-raises-e2-5-mn-in-seed-round-led-by-fortino-ventures/ |
+| Wonderful | Amsterdam | monday.com | AI operating system for the enterprise | $550M Series C, $5B valuation, September 2 2026 | https://www.finsmes.com/2026/09/wonderful-raises-550m-in-series-c-funding.html |
+| Sherpa | unconfirmed (Germany) | monday.com | AI operating system for external workforce management | $2.2M pre-seed, July 2026 | https://tech.eu/2026/07/09/german-ai-workforce-management-startup-sherpa-raises-22m-pre-seed/ |
+| Pillar | Milan | monday.com | AI operating system for construction contractors | €12M seed, May 2026 | https://bricks-bytes.com/ai/pillar-12m-seed-construction-operating-system/ |
+| Capmo | Munich | monday.com | Building project management software for the DACH region | $39M funding, 88 employees, page dated June 2026 | https://capmo.com/ |
+| Teamwork.com | Cork | monday.com | Project, resource and financial management platform | $70M total funding, named in monday.com alternatives coverage, December 2025 | https://www.teamwork.com/blog/monday-alternatives/ |
+| Airspeed | London | 11x | AI execution layer for revenue teams, formerly Glyphic | €17.2M ($20M) Series A, June 2026 | https://www.eu-startups.com/2026/06/londons-airspeed-raises-e17-2-million-series-a-to-build-ai-powered-execution-layer-for-revenue-teams/ |
+| Enginy | Barcelona | 11x | AI-native GTM platform for outbound prospecting | $5.6M funding, 71 employees, +120.5% YoY, page dated June 2026 | https://enginy.ai/ |
+| Crono | London | 11x | AI sales orchestration platform for B2B outreach | 22 employees, 2 prior funding rounds, page dated June 2026 | https://crono.one/ |
+| Outcraft AI | Vilnius | 11x | Autonomous revenue execution agents | €2M pre-seed, April 2026 | https://tech.eu/2026/04/16/outcraft-ai-raises-eur2m-to-support-autonomous-sales-and-revenue-agents/ |
+| Venta AI | Munich | 11x | AI worker for GDPR-compliant cold outreach | $2.6M total funding, YC S23, page dated June 2026 | https://getventa.ai/ |
+| DeepJudge | Zürich | WhyHow | AI search platform for legal teams | $53.1M total funding, 68 employees, +70.8% YoY | https://www.deepjudge.ai/ |
+| Crimson | London | WhyHow | AI case intelligence platform for litigation and arbitration | $2.5M seed, opened New York office, May 2026 | https://www.law.com/legaltechnews/2026/05/28/litigation-platform-crimson-announces-25m-seed-round-new-york-office-/ |
+| Aavalynx | unconfirmed | WhyHow | AI tool to analyse corporate litigation portfolios | £1.5M pre-seed, August 2026 | https://tech.eu/2026/08/04/legal-ai-startup-aavalynx-raises-ps15m-to-cut-the-cost-of-corporate-disputes/ |
+| Jus Mundi | Paris | WhyHow | AI-powered global arbitration intelligence platform | 89 employees, 4 prior funding rounds, page dated June 2026 | https://jusmundi.com/ |
+| Solomonic | London | WhyHow | Litigation intelligence data for the UK High Court | 31 employees, +17.3% YoY, page dated June 2026 | https://solomonic.co.uk/ |
 
 ## Clusters
 
 | City | Companies in the mirror | Dominant type | Read |
 |---|---|---|---|
-| Munich | Atira, Agnosphere, Venta AI, Cliqz GmbH | Applied enterprise AI and agent studios | Matches the research finding that Munich is a growth hub for applied and industrial AI. |
-| Berlin | eyeo, Ecosia | Search and browser infrastructure | Berlin carries the Firefox-type cluster, consistent with research naming Berlin an applied and agentic AI hub. |
-| Paris | EverReady.ai, Skeells | AI sales and revenue tools | Paris shows up here as a GTM-tooling cluster, not the foundation-model cluster the research otherwise credits to Paris. |
-| London | Crono, Reece | AI sales agents for CRM teams | London mirrors HubSpot and 11x directly, consistent with research calling London the top hub by funding and enterprise AI scale-ups. |
-| Zürich | Scalera, SnowHaze | Vertical AI and privacy tooling | A small, mixed cluster with no single dominant type. |
+| London | CodeRabbit, iGent AI, Attio, Crono, Airspeed, Crimson, Solomonic | Developer tools and legal or revenue AI agents | London is the largest node. It mixes coding tools with GTM and legal AI, so it needs both a developer room and a vertical room. |
+| Munich | Zeit AI, CONXAI, Venta AI, Capmo | Agentic AI for engineering and construction workflows | A single vertical room fits here. The cluster centres on workflow automation for technical and industrial teams. |
+| Paris | Brevo, Jus Mundi | CRM and legal intelligence | Two strong, well-funded companies. A vertical room per product line makes sense rather than one shared session. |
+| Helsinki | Avrea, GitHits | Developer infrastructure for AI-generated code | Small but active cluster tied to AI coding workflows. A developer room fits best. |
+| Vilnius | Amigo, Outcraft AI | Autonomous software and sales agents | Early-stage cluster. Worth a joint developer and sales-agent session rather than two separate rooms. |
 
-The mirror concentrates in Munich, Berlin, London and Paris, the same four cities the cited research names as EMEA's primary AI hubs. Munich and Berlin skew toward applied enterprise AI and infrastructure, a fit for a developer-room format. London and Paris skew toward sales and revenue AI tools sold to business buyers, a fit for a vertical or GTM-room format.
+Field activity should start in London first. It has the most companies across the most seed types and the deepest funding. Munich is the second target, built around one clear vertical: agentic AI for engineering and construction. Developer-tool companies fit a developer room. CRM, legal, and construction-workflow companies fit a vertical room built around the buyer, not the technology.
 
 ## Where the mirror breaks
 
-Seed types with no EMEA twin found in this research:
-- Cursor (AI coding tool for developers). The dedicated searches for Cursor returned GTM and sales-intelligence startups, not coding or IDE tools, and the similarity searches returned only pages about Cursor itself.
-- Cognition's specific "agent lab building an AI software engineer" model. The closest EMEA matches build agents for sales, knowledge or business process work, not for writing code.
+**Seed types with no EMEA twin found:**
+- Cognition operates at massive scale, with $2.1B raised and an autonomous AI software engineer sold to large engineering teams. The EMEA companies found are seed or pre-seed stage. No EMEA company matches that scale. This is an inference, not a stated fact in the sources.
+- 11x has raised $76M and serves hundreds of companies including Brex and Otter AI. The EMEA sales-agent companies found are all pre-seed or seed stage, with the largest raise at €17.2M. This is an inference based on the funding gap.
 
-EMEA clusters with no seed precedent (inference, not directly stated in source text):
-- A dense cluster of B2B sales-intelligence and buyer-intent tools (Qlyros, artikle, Stairoids, MarketSizer, Checkpoint GTM) across Berlin, Paris, Rotterdam and Dublin. None of the seven seeds sell this exact intent-scoring product.
-- AI applied to old-economy verticals, such as construction (Scalera, Graneet) and hardware sales engineering (Atira). This is inference: the research shows the pattern but no seed company works in these verticals.
+**EMEA clusters with no seed precedent:**
+- A construction and AEC technology cluster appears repeatedly across the research: CONXAI, Capmo, Pillar, PAVE by PMG, and beeboard. None of the six seeds points to this vertical. This is a finding, not an inference.
+- An external workforce and contractor management cluster also appears: Sherpa, NineID, and Gyver. This sits outside the seed list entirely. This is a finding, not an inference.
 
 ## Gaps
 
-This research could not establish which of these companies already use a search or retrieval API, or which vendor they use. Only one EMEA company, Staan.ai, was confirmed to sell a web search API for AI agents, and it did not appear in the seed-based research above.
+The research could not confirm a city for Codeplain, Aavalynx, or Sherpa. The source text names only the country or calls the company "Europe-based."
 
-The research could not confirm engineering office versus headquarters for most companies. Company profiles list one HQ city and sometimes a distributed workforce across several countries, so the actual EMEA engineering presence needs separate confirmation.
+Zelara's funding round is reported two ways across sources: a €3M pre-seed round in June 2026 and a €3M Series A round in August 2026. The amount matches but the round type does not. A human should check Zelara's own funding announcement to resolve this.
 
-Some source records look unreliable. Octo Browser was labelled a "government agency" in its own profile text, and Cliqz GmbH's profile claims it "is currently in operation" without a verifiable date. Both were excluded or should be re-checked.
+Teamwork.com's own site carries no publication date. Its inclusion rests on a third-party blog post from December 2025, not the company's own dated activity. A human should check Teamwork.com's own news page or LinkedIn for a 2025 or 2026 update.
 
-A human should next verify company size, funding and buying authority through LinkedIn or Crunchbase, confirm which of these companies have a live search or RAG feature in production, and check for direct competitor usage before any outreach.
+Many smaller companies were excluded for lacking named funding or dated activity, including Refact.ai, CodeSpeak, Codaro, Code Sa, and GITMIR. A human should check whether any of these have since raised funding or published news, since the source snapshots may be out of date.
+
+The "About" text for every company came from self-description, not independent verification. A human should confirm product overlap with each seed by testing the product or reading a customer case study, not just the company's own claims.

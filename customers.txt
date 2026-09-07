@@ -1,7 +1,6 @@
-Cursor
-Cognition
-HubSpot
-monday.com
-11x
-Mozilla Firefox
-WhyHow
+Cursor: AI code editor and coding agent for software developers
+Cognition: autonomous AI software engineer for engineering teams
+HubSpot: CRM and marketing platform for sales and marketing teams
+monday.com: work management platform for business teams
+11x: autonomous AI sales agents that do outbound for sales teams
+WhyHow: legal intelligence built on AI search for litigation teams
