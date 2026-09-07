@@ -115,7 +115,13 @@ def ask(key, questions):
 
 
 def synthesise(prompt):
-    prompt += ("\n\nReturn the complete markdown pack as your reply text, "
+    prompt += ("\n\nWriting rules. Plain English. Sentences of 20 words or fewer. "
+               "Active voice. One idea per sentence. No semicolons, no dashes as "
+               "punctuation, no brackets in prose. No hedging words: say what the "
+               "source shows or say the research did not find it. Table cells are "
+               "one short phrase or one sentence. Keep every fact, date, number and "
+               "source URL.\n\n"
+               "Return the complete markdown pack as your reply text, "
                "starting at the first section heading. Do not write files, "
                "run tools, or describe what you produced.")
     r = subprocess.run(
