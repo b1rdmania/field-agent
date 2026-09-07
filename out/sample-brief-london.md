@@ -23,7 +23,7 @@ Built with Exa search + Claude. Research is a starting point, not a send list.
 
 **1. [redacted]**
 
-Subject: Dinner in London — platform engineering leaders, no deck required
+Subject: Dinner in London, platform engineering leaders, no deck required
 
 Hi [redacted],
 
@@ -69,22 +69,22 @@ The Exa team in London
 
 ## Run of show
 
-**4:00pm** — Venue walkthrough: confirm private room layout, seating chart (12), AV/no-AV check, table temperature.
-**4:15pm** — Confirm final headcount with venue; flag any dietary requirements collected from RSVPs.
-**4:30pm** — Print/lay out place cards; confirm seating avoids direct competitor pairings, mixes bank/enterprise guests with AI/scale-up guests.
-**4:45pm** — Brief the two Exa hosts attending: who's who, one talking point per guest (pulled from "why this seat" column), conversation goals.
-**5:00pm** — Confirm wine/drinks order and any pre-authorised budget cap with venue manager.
-**5:15pm** — Test any welcome signage/name reader at entrance; confirm coat check.
-**5:30pm** — Hosts on-site, final table check, phones/chargers stashed, welcome drinks staged.
-**6:00pm** — Host team stationed at entrance; late-RSVP or no-show list on hand for the room block.
-**6:30pm** — Guest arrival window opens; welcome drinks served in a separate area from the dinner table so guests don't stand around an empty table.
-**6:55pm** — Move to table; opening remarks from host (60-90 seconds, no pitch).
-**7:05pm** — Starters served; hosts seed one open question to the table ("what's actually broken in platform engineering right now").
-**7:45pm** — Mains served; hosts rotate attention, ensure quieter guests get pulled in.
-**8:45pm** — Dessert/coffee; softer conversation, one-on-one follow-ups begin.
-**9:15pm** — Natural close signal from host; thank-yous, no formal end-of-dinner speech.
-**9:30pm** — Room officially closes; taxis/cars arranged for guests who need them.
-**9:45pm** — Debrief with Exa team on-site: capture who said what, follow-up actions, no-shows to re-engage.
+**4:00pm**: Venue walkthrough: confirm private room layout, seating chart (12), AV/no-AV check, table temperature.
+**4:15pm**: Confirm final headcount with venue; flag any dietary requirements collected from RSVPs.
+**4:30pm**: Print/lay out place cards; confirm seating avoids direct competitor pairings, mixes bank/enterprise guests with AI/scale-up guests.
+**4:45pm**: Brief the two Exa hosts attending: who's who, one talking point per guest (pulled from "why this seat" column), conversation goals.
+**5:00pm**: Confirm wine/drinks order and any pre-authorised budget cap with venue manager.
+**5:15pm**: Test any welcome signage/name reader at entrance; confirm coat check.
+**5:30pm**: Hosts on-site, final table check, phones/chargers stashed, welcome drinks staged.
+**6:00pm**: Host team stationed at entrance; late-RSVP or no-show list on hand for the room block.
+**6:30pm**: Guest arrival window opens; welcome drinks served in a separate area from the dinner table so guests don't stand around an empty table.
+**6:55pm**: Move to table; opening remarks from host (60-90 seconds, no pitch).
+**7:05pm**: Starters served; hosts seed one open question to the table ("what's actually broken in platform engineering right now").
+**7:45pm**: Mains served; hosts rotate attention, ensure quieter guests get pulled in.
+**8:45pm**: Dessert/coffee; softer conversation, one-on-one follow-ups begin.
+**9:15pm**: Natural close signal from host; thank-yous, no formal end-of-dinner speech.
+**9:30pm**: Room officially closes; taxis/cars arranged for guests who need them.
+**9:45pm**: Debrief with Exa team on-site: capture who said what, follow-up actions, no-shows to re-engage.
 
 ## Gaps
 
