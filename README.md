@@ -1,23 +1,28 @@
 # field-agent
 
-Ask a field-marketing question in one line. Agents research it on [Exa](https://exa.ai) and write back a sourced brief. It only researches. It never contacts anyone.
+Research tool for field marketing. You type one question. The tool searches [Exa](https://exa.ai), checks the results, and writes a short report with sources. It does not contact anyone.
 
-## Three questions, three runs
+## What it answers
 
-**Where do the competitors show up in EMEA, and where is the white space?**
-[The events radar](out/sample-events-emea.md). Six competitors, one region. Dated sponsorships for three of them, a plainly stated zero for the other three, and the anchor calendar with who is present at each. The white space: nobody in the set runs a small-room format in EMEA, and RAISE Summit Paris draws C-level buyers with no competitor present.
+**Where do the competitors run events in EMEA? Where is the gap?**
+Command: `events`. Report: [the events radar](out/sample-events-emea.md).
+The run covered six competitors. It found dated sponsorships for three and no EMEA events for the other three. It found the gap: no competitor runs a small-room format in EMEA, and RAISE Summit Paris has C-level buyers and no competitor present.
 
-**Which EMEA companies mirror the existing customer base, and where do they cluster?**
-[The customer mirror](out/sample-mirror-emea.md). Seven public customers in, the EMEA companies that look like them out, grouped by city. Companies only, no people. The clusters decide where field activity concentrates first and which format fits each city.
+**Which EMEA companies look like the current customers? Which cities have most of them?**
+Command: `mirror`. Input: a list of current customers (`customers.txt` has seven public ones). Output: the EMEA companies that match, grouped by city, with one reason and one source each. Companies only. No people.
 
-**Who already runs the room in London?**
-[The co-host map](out/sample-cohosts-london.md). The recurring meetups, demo nights and hackathon series for AI developers in one city, with organiser, cadence, size and last seen. Field marketing at a search-API company co-hosts with whoever owns the list. This finds them.
+**Who already runs the room for AI developers in one city?**
+Command: `cohosts`. Output: the meetups, demo nights and hackathon series that run more than once, with organiser, how often, how many people, and the last date seen. Organisations only. No people.
 
-Each pack ends with a gaps section: what the research could not establish and what a human checks next. The verdicts are starting points, not settled calls.
+Each report ends with a list of what the research did not find. Treat each report as a starting point.
 
 ## How it works
 
-Two stages. Exa gathers sourced signals through `/search`, `/findSimilar` and `/answer`. Claude qualifies them: every claim grounded in source text, inference marked as inference, junk cut. Personal data stays out of version control. Committed samples name companies and roles, not people.
+Step 1. Exa collects pages that match the question, through `/search`, `/findSimilar` and `/answer`. Every page keeps its URL.
+Step 2. Claude reads the pages. It keeps claims that the page text supports. It marks guesses as guesses. It removes junk.
+Step 3. The tool writes one Markdown file to `out/`.
+
+Personal data does not go into version control. Sample reports name companies and job titles, not people.
 
 ## Run it
 
@@ -29,10 +34,12 @@ python3 field_agent.py mirror customers.txt --region EMEA
 python3 field_agent.py cohosts London --audience "AI developers"
 ```
 
-One file, stdlib only. Needs Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-code). A run costs a few cents of Exa credit. `--help` lists the older commands (narrative, sidebar, market, expand, guests, brief, venues, dinner, followup, playbook); their samples are in `out/`.
+One Python file. No dependencies. You need Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-code). One run costs a few cents of Exa credit.
 
-## Why this exists
+`python3 field_agent.py --help` lists the older commands: narrative, sidebar, market, expand, guests, brief, venues, dinner, followup, playbook. Their sample reports are in `out/`.
 
-I ran a global events programme for a technology company as the only hire: 35 to 40 activations a year across Europe, Asia and the US, reported as pipeline. The research load is most of the job and almost none of the craft. This is that load, automated, so the person covering a continent spends their time on the room. [Andy Bird](https://x.com/b1rdmania)
+## Why it exists
+
+I ran the events programme for a technology company as the only hire. 35 to 40 events a year in Europe, Asia and the US, reported as pipeline. Most of the work was research: who to invite, why now, what the market is doing, what happens after. This tool does that part. The person who covers a continent then spends the time on the room. [Andy Bird](https://x.com/b1rdmania)
 
 License: MIT
