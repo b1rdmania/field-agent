@@ -1,6 +1,6 @@
 # field-agent
 
-Field marketing research on [Exa](https://exa.ai). Three tools. Each one takes a question, searches Exa, checks the results, and writes a report with sources. None of them contact anyone.
+Field marketing research on [Exa](https://exa.ai). Four tools. Three take a question, search Exa, check the results, and write a report with sources. The fourth takes a guest list and writes a spreadsheet. None of them contact anyone.
 
 The tools work from the sales team's target list and customer list. They do not replace it. If no list exists yet, the same tools can help build one.
 
@@ -26,6 +26,8 @@ This tool needs the sales team's customer list and US target list as input. The 
 Input: a list of customers or target accounts, and a region.
 Output: the companies in the region that match, with city, the customer they mirror, what they build, why they fit and the source. Then the count per city. Then where the mirror breaks: customer types with no local match, and local clusters with no US precedent. Companies only. No people.
 
+Report: [the customer mirror, EMEA](out/sample-mirror-emea.md). Twenty-four companies across Munich, Berlin, London, Paris and Zürich. The break: no EMEA twin for Cursor. The report flags one profile that looks out of date.
+
 ```bash
 python3 field_agent.py mirror customers.txt --region EMEA
 ```
@@ -37,18 +39,36 @@ Who already runs the room for an audience in a city?
 Input: a city and an audience.
 Output: the meetups, demo nights and hackathon series that run more than once, with the organisation that runs them, how often, how many people, the audience and the last date seen. Then which of these rooms hold the list a partner would want. Organisations only. No people.
 
+Report: [the co-host map, London AI developers](out/sample-cohosts-london.md). Six recurring rooms and nine one-offs. Two communities hold the list a partner would want, and the report says which slots are paid sponsorship rather than co-host.
+
 ```bash
 python3 field_agent.py cohosts London --audience "AI developers"
+```
+
+## 4. Attendees and ledger
+
+Who came, which target accounts were in the room, and what the event cost per outcome.
+
+This tool is a working draft. It reads a Luma guest export because every field team has one. The last three columns of the ledger come from the sales system. They are blank until the tool knows which system that is.
+
+Input: a Luma guest export (CSV, or the Luma API with a key), the target account list, and the event facts (date, format, city, cost, invited).
+Output: one workbook with two sheets. Attendees: name, company, title, target account matched, registered, attended, what the company builds, source, seller owner, next step. The seller fills the last two. Event ledger: one row with invited, registered, attended, target accounts on the list, target accounts attended, meetings booked, opportunities, pipeline sourced. The tool fills the first five from the list. Sales fills the last three. The row also appends to `out/ledger.csv`, so every event lands in one table.
+
+Exa looks up companies, not people. The sample run uses made-up guests at real companies (`sample-guests.csv`, `sample-targets.txt`): [the workbook](out/sample-attendees-demo-night.xlsx) and [the ledger](out/sample-ledger.csv).
+
+```bash
+python3 field_agent.py attendees sample-guests.csv --accounts sample-targets.txt \
+  --event "Demo night, London" --date 2026-10-15 --format "demo night" --city London --cost 2400 --invited 40
 ```
 
 ## How each tool works
 
 1. Exa collects pages that match the question, through `/search`, `/findSimilar` and `/answer`. Every page keeps its URL.
 2. Claude reads the pages. It keeps the claims the page text supports. It marks guesses as guesses. It removes junk.
-3. The tool writes one Markdown report to `out/`. The last section lists what the research did not find.
+3. The tool writes one Markdown report to `out/`. The last section lists what the research did not find. The attendees tool skips step 2 and writes a workbook instead.
 
 One Python file, no dependencies. Needs Python 3, curl, the [Claude Code CLI](https://claude.com/claude-code) and `EXA_API_KEY`. One run costs a few cents.
 
-Sample reports name companies and job titles, not people. `--help` lists older commands (narrative, sidebar, market, expand, guests, brief, venues, dinner, followup, playbook); their samples are in `out/`.
+Sample reports name companies and job titles, not people. `--help` lists older commands (narrative, sidebar, market, expand, guests, brief, venues, dinner, followup, playbook); their samples are in `out/`. The newest is [the fringe map for Slush 2026](out/sample-sidebar-slush-2026.md).
 
 License: MIT

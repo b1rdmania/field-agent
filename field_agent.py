@@ -9,11 +9,13 @@ The three main commands:
   events    where competitors show up in a region, and the white space
   mirror    the region's mirror of the existing customer base, by city
   cohosts   who already runs recurring rooms for an audience in a city
+  attendees a Luma guest list matched to the target list, as a workbook
 
 Usage:
   python3 field_agent.py events --competitors "Tavily, Firecrawl, Perplexity" --region EMEA
   python3 field_agent.py mirror customers.txt --region EMEA
   python3 field_agent.py cohosts London --audience "AI developers"
+  python3 field_agent.py attendees guests.csv --accounts targets.txt --event "Demo night"
 
 Other commands (narrative, sidebar, market, competitors, expand, guests,
 brief, venues, dinner, followup, playbook) are listed by --help.
@@ -878,6 +880,222 @@ Source packs:
 
 # ---------------------------------------------------------------- main
 
+def read_luma_csv(path):
+    """Rows from a Luma guest export. Column names vary, so match by meaning."""
+    import csv
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+    if not rows:
+        sys.exit(f"no rows in {path}")
+
+    def col(*needles):
+        for k in rows[0].keys():
+            lk = k.lower()
+            if all(n in lk for n in needles):
+                return k
+        return None
+
+    c_name, c_email = col("name"), col("email")
+    c_company = col("company") or col("organi")
+    c_title = col("title") or col("role") or col("job")
+    c_status = col("approval") or col("status")
+    c_checkin = col("check")
+    out = []
+    for r in rows:
+        email = (r.get(c_email) or "").strip() if c_email else ""
+        company = (r.get(c_company) or "").strip() if c_company else ""
+        if not company and "@" in email:
+            domain = email.split("@", 1)[1].lower()
+            if domain not in FREEMAIL:
+                company = domain.split(".")[0]
+        status = (r.get(c_status) or "").strip().lower() if c_status else ""
+        checked = bool((r.get(c_checkin) or "").strip()) if c_checkin else False
+        out.append({
+            "name": (r.get(c_name) or "").strip() if c_name else "",
+            "company": company,
+            "title": (r.get(c_title) or "").strip() if c_title else "",
+            "registered": status in ("", "approved", "going", "registered", "yes"),
+            "attended": checked,
+        })
+    return out
+
+
+def read_luma_api(event_id):
+    """Guests from the Luma API. Needs LUMA_API_KEY (Luma Plus)."""
+    key = os.environ.get("LUMA_API_KEY")
+    if not key:
+        sys.exit("set LUMA_API_KEY, or export the guest list as CSV")
+    out, cursor = [], None
+    while True:
+        url = f"https://api.lu.ma/public/v1/event/get-guests?event_api_id={event_id}"
+        if cursor:
+            url += f"&pagination_cursor={cursor}"
+        r = subprocess.run(["curl", "-s", "--fail-with-body", url,
+                            "-H", f"x-luma-api-key: {key}"],
+                           capture_output=True, text=True, timeout=60)
+        if r.returncode != 0:
+            sys.exit(f"luma api failed: {r.stdout[:300]}")
+        data = json.loads(r.stdout)
+        for e in data.get("entries", []):
+            g = e.get("guest", e)
+            answers = {a.get("label", "").lower(): a.get("answer", "")
+                       for a in g.get("registration_answers", [])}
+            company = next((v for k, v in answers.items() if "company" in k), "")
+            title = next((v for k, v in answers.items() if "title" in k or "role" in k), "")
+            email = g.get("email", "") or ""
+            if not company and "@" in email:
+                domain = email.split("@", 1)[1].lower()
+                if domain not in FREEMAIL:
+                    company = domain.split(".")[0]
+            out.append({"name": g.get("name", ""), "company": company, "title": title,
+                        "registered": g.get("approval_status", "approved") == "approved",
+                        "attended": bool(g.get("checked_in_at"))})
+        cursor = data.get("next_cursor")
+        if not data.get("has_more") or not cursor:
+            break
+    return out
+
+
+FREEMAIL = ("gmail.com", "googlemail.com", "outlook.com", "hotmail.com", "yahoo.com",
+            "icloud.com", "me.com", "proton.me", "protonmail.com", "live.com")
+
+
+def stem(name):
+    return "".join(c for c in name.lower() if c.isalnum())
+
+
+def match_account(company, accounts):
+    """The target account a company name matches, or empty."""
+    cs = stem(company)
+    if not cs:
+        return ""
+    for a in accounts:
+        a_s = stem(a)
+        if a_s and (a_s in cs or cs in a_s):
+            return a
+    return ""
+
+
+def enrich_companies(key, companies):
+    """One Exa company search per unique company. What they build, where, source."""
+    found = {}
+    for c in companies:
+        if not c or c in found:
+            continue
+        print(f"  exa search: [company] {c}")
+        try:
+            hits = exa_search(key, f"{c} company: what it builds and where it is based", 1, "company")
+        except Exception as e:
+            print(f"  ! search failed for {c}: {e}")
+            hits = []
+        if hits:
+            h = hits[0]
+            lines = [l for l in (h.get("text") or "").splitlines() if l.strip() and not l.lstrip().startswith("#")]
+            text = " ".join(" ".join(lines).split())
+            found[c] = {"about": text[:160], "url": h.get("url", "")}
+        else:
+            found[c] = {"about": "", "url": ""}
+    return found
+
+
+def write_xlsx(path, sheets):
+    """Minimal .xlsx writer. sheets = [(name, rows)], rows = lists of cells."""
+    import zipfile
+    from xml.sax.saxutils import escape
+
+    def sheet_xml(rows):
+        body = []
+        for i, row in enumerate(rows, 1):
+            cells = []
+            for j, v in enumerate(row):
+                ref = f"{chr(65 + j) if j < 26 else 'A' + chr(65 + j - 26)}{i}"
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    cells.append(f'<c r="{ref}"><v>{v}</v></c>')
+                else:
+                    cells.append(f'<c r="{ref}" t="inlineStr"><is><t>{escape(str(v))}</t></is></c>')
+            body.append(f'<row r="{i}">{"".join(cells)}</row>')
+        return ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+                f'<sheetData>{"".join(body)}</sheetData></worksheet>')
+
+    ns_r = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+    wb = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+          '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+          f'xmlns:r="{ns_r}"><sheets>']
+    rels = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">']
+    ctypes = ['<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',
+              '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">',
+              '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>',
+              '<Default Extension="xml" ContentType="application/xml"/>',
+              '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>']
+    for n, (name, _) in enumerate(sheets, 1):
+        wb.append(f'<sheet name="{escape(name)}" sheetId="{n}" r:id="rId{n}"/>')
+        rels.append(f'<Relationship Id="rId{n}" Type="{ns_r}/worksheet" Target="worksheets/sheet{n}.xml"/>')
+        ctypes.append(f'<Override PartName="/xl/worksheets/sheet{n}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>')
+    wb.append('</sheets></workbook>')
+    rels.append('</Relationships>')
+    ctypes.append('</Types>')
+    root_rels = ('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                 '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+                 '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'
+                 '</Relationships>')
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("[Content_Types].xml", "".join(ctypes))
+        z.writestr("_rels/.rels", root_rels)
+        z.writestr("xl/workbook.xml", "".join(wb))
+        z.writestr("xl/_rels/workbook.xml.rels", "".join(rels))
+        for n, (_, rows) in enumerate(sheets, 1):
+            z.writestr(f"xl/worksheets/sheet{n}.xml", sheet_xml(rows))
+
+
+def cmd_attendees(key, args):
+    """Luma guest list in. Companies matched to the target list. Workbook out."""
+    guests = read_luma_api(args.luma_event) if args.luma_event else read_luma_csv(args.source)
+    accounts = read_lines(args.accounts) if args.accounts else []
+    companies = sorted({g["company"] for g in guests if g["company"]})
+    info = enrich_companies(key, companies)
+
+    header = ["Name", "Company", "Title", "Target account", "Registered", "Attended",
+              "What the company builds", "Source", "Seller owner", "Next step"]
+    rows = [header]
+    hit_accounts = set()
+    for g in guests:
+        acct = match_account(g["company"], accounts)
+        if acct and g["attended"]:
+            hit_accounts.add(acct)
+        i = info.get(g["company"], {})
+        rows.append([g["name"], g["company"], g["title"], acct,
+                     "yes" if g["registered"] else "no", "yes" if g["attended"] else "no",
+                     i.get("about", ""), i.get("url", ""), "", ""])
+
+    registered = sum(1 for g in guests if g["registered"])
+    attended = sum(1 for g in guests if g["attended"])
+    ledger_header = ["Event", "Date", "Format", "City", "Cost", "Invited", "Registered", "Attended",
+                     "Target accounts on list", "Target accounts attended", "Meetings booked",
+                     "Opportunities", "Pipeline sourced"]
+    ledger_row = [args.event, args.date, args.format, args.city, args.cost, args.invited,
+                  registered, attended, len(accounts), len(hit_accounts), "", "", ""]
+
+    OUT.mkdir(exist_ok=True)
+    path = OUT / f"{slugify('attendees', args.event)}.xlsx"
+    write_xlsx(path, [("Attendees", rows), ("Event ledger", [ledger_header, ledger_row])])
+
+    ledger = OUT / "ledger.csv"
+    import csv
+    new = not ledger.exists()
+    with open(ledger, "a", newline="") as f:
+        w = csv.writer(f)
+        if new:
+            w.writerow(ledger_header)
+        w.writerow(ledger_row)
+
+    print(f"  {len(guests)} guests, {registered} registered, {attended} attended, "
+          f"{len(hit_accounts)} of {len(accounts)} target accounts in the room")
+    print(f"  wrote {path}")
+    print(f"  ledger row appended to {ledger}")
+
+
 def main():
     ap = argparse.ArgumentParser(description="field marketing on Exa search")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -939,6 +1157,17 @@ def main():
     f.add_argument("attendees", help="file: one 'Name - role, company' per line")
     f.add_argument("--event", required=True)
 
+    at = sub.add_parser("attendees", help="Luma guest list to a tracked attendee sheet and an event ledger row")
+    at.add_argument("source", nargs="?", help="Luma guest export (.csv)")
+    at.add_argument("--luma-event", help="Luma event api id (needs LUMA_API_KEY)")
+    at.add_argument("--accounts", help="file: one target account per line")
+    at.add_argument("--event", required=True)
+    at.add_argument("--date", default="")
+    at.add_argument("--format", default="", help="dinner, demo night, coffee morning, hackathon")
+    at.add_argument("--city", default="")
+    at.add_argument("--cost", default="")
+    at.add_argument("--invited", default="")
+
     p = sub.add_parser("playbook", help="synthesise a market's packs into the inheritable doc")
     p.add_argument("market")
     p.add_argument("--all", action="store_true", help="use every pack in out/")
@@ -949,7 +1178,7 @@ def main():
     {"market": cmd_market, "competitors": cmd_competitors, "events": cmd_events, "mirror": cmd_mirror, "cohosts": cmd_cohosts, "expand": cmd_expand,
      "guests": cmd_guests, "brief": cmd_brief, "venues": cmd_venues, "dinner": cmd_dinner,
      "followup": cmd_followup, "playbook": cmd_playbook,
-     "narrative": cmd_narrative, "sidebar": cmd_sidebar}[args.cmd](key, args)
+     "narrative": cmd_narrative, "sidebar": cmd_sidebar, "attendees": cmd_attendees}[args.cmd](key, args)
 
 
 if __name__ == "__main__":

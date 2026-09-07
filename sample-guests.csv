@@ -1,0 +1,13 @@
+api_id,name,email,created_at,approval_status,checked_in_at,ticket_name,What company do you work for?,What is your job title?
+gst-001,Sample Guest 01,guest01@klarna.com,2026-10-01T09:12:00Z,approved,2026-10-15T18:04:00Z,Standard,Klarna,Head of Data Platform
+gst-002,Sample Guest 02,guest02@wise.com,2026-10-01T10:30:00Z,approved,2026-10-15T18:11:00Z,Standard,Wise,Staff Engineer
+gst-003,Sample Guest 03,guest03@monzo.com,2026-10-02T08:02:00Z,approved,,Standard,Monzo,ML Engineering Lead
+gst-004,Sample Guest 04,guest04@checkout.com,2026-10-02T14:45:00Z,approved,2026-10-15T18:20:00Z,Standard,Checkout.com,Principal Engineer
+gst-005,Sample Guest 05,guest05@legora.com,2026-10-03T11:00:00Z,approved,2026-10-15T18:02:00Z,Standard,Legora,Head of AI
+gst-006,Sample Guest 06,guest06@wordsmith.ai,2026-10-03T16:15:00Z,approved,2026-10-15T18:33:00Z,Standard,Wordsmith,CTO
+gst-007,Sample Guest 07,guest07@robinai.com,2026-10-04T09:40:00Z,approved,,Standard,Robin AI,VP Engineering
+gst-008,Sample Guest 08,guest08@luminance.com,2026-10-04T13:05:00Z,approved,2026-10-15T18:50:00Z,Standard,Luminance,Head of Research
+gst-009,Sample Guest 09,guest09@deliveroo.co.uk,2026-10-05T10:10:00Z,approved,2026-10-15T18:09:00Z,Standard,Deliveroo,Data Science Manager
+gst-010,Sample Guest 10,guest10@gmail.com,2026-10-05T19:22:00Z,approved,2026-10-15T18:40:00Z,Standard,,Independent developer
+gst-011,Sample Guest 11,guest11@revolut.com,2026-10-06T08:55:00Z,approved,,Standard,Revolut,Head of Fraud Analytics
+gst-012,Sample Guest 12,guest12@outlook.com,2026-10-06T12:00:00Z,declined,,Standard,,

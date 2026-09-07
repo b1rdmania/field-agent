@@ -10,4 +10,4 @@ __pycache__/
 
 # real run output stays out; only redacted samples commit
 out/*
-!out/sample-*.md
+!out/sample-*
