@@ -1,8 +1,8 @@
 # field-agent
 
-Field marketing research on [Exa](https://exa.ai). Four tools. Three take a question, search Exa, check the results, and write a report with sources. The fourth takes a guest list and writes a spreadsheet. None of them contact anyone.
+Four research tools for a field marketing team, built on [Exa](https://exa.ai). Three of them answer a question with a sourced report. The fourth turns a guest list into a tracked spreadsheet. None of them contact anyone.
 
-The tools work from the sales team's target list and customer list. They do not replace it. If no list exists yet, the same tools can help build one.
+Each tool starts from the sales team's target list and customer list. It does not replace that list. If no list exists yet, the same tools can help build one.
 
 ## 1. Events radar
 
@@ -47,9 +47,9 @@ python3 field_agent.py cohosts London --audience "AI developers"
 
 ## 4. Attendees and ledger
 
-Who came, which target accounts were in the room, and what the event cost per outcome.
+This tool records who came, which target accounts were in the room, and what the event cost.
 
-This tool is a working draft. It reads a Luma guest export because every field team has one. The last three columns of the ledger come from the sales system. They are blank until the tool knows which system that is.
+It is a working draft. It reads a Luma guest export because every field team has one. The last three columns of the ledger belong to the sales system. They stay blank until that system is known.
 
 Input: a Luma guest export (CSV, or the Luma API with a key), the target account list, and the event facts (date, format, city, cost, invited).
 Output: one workbook with two sheets. Attendees: name, company, title, target account matched, registered, attended, what the company builds, source, seller owner, next step. The seller fills the last two. Event ledger: one row with invited, registered, attended, target accounts on the list, target accounts attended, meetings booked, opportunities, pipeline sourced. The tool fills the first five from the list. Sales fills the last three. The row also appends to `out/ledger.csv`, so every event lands in one table.
