@@ -1,43 +1,23 @@
 # field-agent
 
-Ask a field-marketing question in one line — which city, which competitors' events, which accounts, who should be in the room. Agents research it on [Exa](https://exa.ai) and write back a sourced brief. It only ever researches; it never contacts anyone.
+Ask a field-marketing question in one line. Agents research it on [Exa](https://exa.ai) and write back a sourced brief. It only researches. It never contacts anyone.
 
-## The demos
+## Three questions, three runs
 
-**Where is the competition actually showing up in EMEA — and where's the white space?** One command tracked six competitors' event footprints across the region → **[the events radar](out/sample-events-emea.md)**. What it found: dated sponsorships and exhibits for three of them, a plainly-stated zero for the other three, the anchor calendar with who's present at each — and the white space: nobody in the set runs a small-room executive format in EMEA, and at least one confirmed enterprise-buyer conference has no competitor present at all. The competitive set itself came from [a landscape run on Exa's own API](out/sample-competitors-exa.md) — identify the set, then track their rooms.
+**Where do the competitors show up in EMEA, and where is the white space?**
+[The events radar](out/sample-events-emea.md). Six competitors, one region. Dated sponsorships for three of them, a plainly stated zero for the other three, and the anchor calendar with who is present at each. The white space: nobody in the set runs a small-room format in EMEA, and RAISE Summit Paris draws C-level buyers with no competitor present.
 
-**Who owns the words this category uses, and which ones are still unclaimed?** One command read the stages instead of the floor plans → **[the narrative radar](out/sample-narrative-ai-search-emea.md)**. What it found: "agent-native search API" is not yet a named category on any independent stage, even while Microsoft and Google visibly cede the space - and the thing that would make it one is an operator, not a vendor, standing up with production numbers. Two more unclaimed themes with real operator evidence behind them and nobody credible attached.
+**Which EMEA companies mirror the existing customer base, and where do they cluster?**
+[The customer mirror](out/sample-mirror-emea.md). Seven public customers in, the EMEA companies that look like them out, grouped by city. Companies only, no people. The clusters decide where field activity concentrates first and which format fits each city.
 
-**How do you own a week you are already attending?** One command mapped the unofficial programme around AI Summit London → **[the fringe map](out/sample-sidebar-ai-summit-london.md)**. Named partner dinners, one pre-summit fringe talk, an afterparty - and the honest read that this is a floor-heavy event with a thin fringe, so a complement works and a competing draw does not.
+**Who already runs the room in London?**
+[The co-host map](out/sample-cohosts-london.md). The recurring meetups, demo nights and hackathon series for AI developers in one city, with organiser, cadence, size and last seen. Field marketing at a search-API company co-hosts with whoever owns the list. This finds them.
 
-**Where does an EMEA base sit, and which market gets event investment first?** One command ranked London, Paris, Amsterdam and Munich on buyer density, anchor calendar and local event norms → **[the market memo](out/sample-market-emea.md)**. The evidence points at London as the base and the first events market — and the memo says why, what format fits each city, and what would change the call.
+Each pack ends with a gaps section: what the research could not establish and what a human checks next. The verdicts are starting points, not settled calls.
 
-**Who sits where, and why?** [An account-based guest map](out/sample-guest-map-london.md) with a why-this-seat note a seller can use, [a private-dining shortlist](out/sample-venues-london.md) with minimum spends cited in local currency, and [a cold-start dinner brief](out/sample-brief-london.md) with invites and the run of show — including the 4pm checks before a 6pm start. Plus [tiered lookalike accounts](out/sample-expand-emea.md) from two seeds, shrinking shells disqualified by name.
+## How it works
 
-These are demo runs, committed to show what the workflows produce. The verdicts are starting points for a human argument, not settled calls — every pack ends with a gaps section that says what the research could not establish and where a human digs next.
-
-## The workflows
-
-| Command | What comes back |
-|---|---|
-| `events` | competitor events radar for a region: footprints per competitor, the anchor calendar with who's present, and the white space |
-| `narrative` | what the category says on stage, who has annexed which phrase, and which themes have operator pull but nobody credible attached |
-| `sidebar` | the unofficial programme around one anchor conference: the fringe, the contested slots, and where a room still fits |
-| `market` | which market deserves the next quarter's investment, with a pipeline rationale and the evidence that would change the call |
-| `competitors` | competitive set, dated moves with so-whats, positioning, white space — the radar's input |
-| `expand` | tiered lookalike accounts via neural search, disqualifications by name |
-| `brief` | pre-meeting dossier: live signals, three specific openers, handle-with-care |
-| `guests` / `dinner` / `venues` / `followup` | seat maps, run of show, venue shortlists, and the post-event queue — with GDPR consent and lawful-basis notes built in |
-| `playbook` | the doc a next hire inherits instead of starting from zero |
-
-```mermaid
-flowchart LR
-    A["one-line input"] --> B["Exa gathers\n/search · /findSimilar · /answer"]
-    B --> C["Claude qualifies\nground · cut junk · mark inference"]
-    C --> D["briefing pack\nfindings · sources · gaps"]
-```
-
-Two stages, every command: Exa gathers sourced signals, Claude qualifies them hard — every claim grounded, inference marked as inference, junk cut with reasons. It never contacts anyone; every pack is a brief for a human. Personal data stays out of version control — committed samples are redacted to roles and companies.
+Two stages. Exa gathers sourced signals through `/search`, `/findSimilar` and `/answer`. Claude qualifies them: every claim grounded in source text, inference marked as inference, junk cut. Personal data stays out of version control. Committed samples name companies and roles, not people.
 
 ## Run it
 
@@ -45,12 +25,14 @@ Two stages, every command: Exa gathers sourced signals, Claude qualifies them ha
 git clone https://github.com/b1rdmania/field-agent && cd field-agent
 export EXA_API_KEY=your-key
 python3 field_agent.py events --competitors "Tavily, Firecrawl, Perplexity" --region EMEA
+python3 field_agent.py mirror customers.txt --region EMEA
+python3 field_agent.py cohosts London --audience "AI developers"
 ```
 
-One file, stdlib only. Needs Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-code). A run costs a few cents of Exa credit.
+One file, stdlib only. Needs Python 3, curl, and the [Claude Code CLI](https://claude.com/claude-code). A run costs a few cents of Exa credit. `--help` lists the older commands (narrative, sidebar, market, expand, guests, brief, venues, dinner, followup, playbook); their samples are in `out/`.
 
 ## Why this exists
 
-I ran a global events programme for a technology company as the only hire: 35–40 activations a year across Europe, Asia and the US, reported as pipeline. The research load — who should be in the room, why now, what the market is doing, what happens after — is most of the job and almost none of the craft. This is that load, automated, so the person covering a continent spends their time on the part machines can't do: the room. — [Andy Bird](https://x.com/b1rdmania)
+I ran a global events programme for a technology company as the only hire: 35 to 40 activations a year across Europe, Asia and the US, reported as pipeline. The research load is most of the job and almost none of the craft. This is that load, automated, so the person covering a continent spends their time on the room. [Andy Bird](https://x.com/b1rdmania)
 
 License: MIT

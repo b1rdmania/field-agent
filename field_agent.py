@@ -1,29 +1,22 @@
 #!/usr/bin/env python3
-"""field-agent: a field marketing job spec, implemented.
+"""field-agent: field marketing research on Exa search.
 
-Ten commands covering the field-marketing loop for one person running a
-region, all built on Exa search (/search, /findSimilar, /answer):
+Ask one question. Exa gathers sourced signals. Claude qualifies them and
+writes one markdown pack to out/. Nothing ever contacts anyone.
 
-  market    which cities deserve the next event, with evidence
-  expand    seller gives five accounts; findSimilar returns the lookalikes
-  guests    account-based guest mapping: target accounts in, seat map out
-  brief     pre-event dossier on one guest or account
-  venues    private-dining shortlist and negotiation notes for a city
-  dinner    cold-start discovery when no account list exists yet
-  followup  post-event: per-attendee brief, draft follow-up, handoff note
-  playbook  synthesise every pack for a market into the doc the next hire inherits
+The three main commands:
 
-Each command writes one markdown pack to out/. Nothing ever sends.
+  events    where competitors show up in a region, and the white space
+  mirror    the region's mirror of the existing customer base, by city
+  cohosts   who already runs recurring rooms for an audience in a city
 
 Usage:
-  python3 field_agent.py market "AI platform buyers" --cities London,Paris,Munich
-  python3 field_agent.py expand accounts.txt --market EMEA
-  python3 field_agent.py guests accounts.txt --market London
-  python3 field_agent.py brief "Jane Doe, Checkout.com"
-  python3 field_agent.py venues London --seats 14
-  python3 field_agent.py dinner "platform engineering leaders" --market London
-  python3 field_agent.py followup attendees.txt --event "London infra dinner, 12 Aug"
-  python3 field_agent.py playbook london
+  python3 field_agent.py events --competitors "Tavily, Firecrawl, Perplexity" --region EMEA
+  python3 field_agent.py mirror customers.txt --region EMEA
+  python3 field_agent.py cohosts London --audience "AI developers"
+
+Other commands (narrative, sidebar, market, competitors, expand, guests,
+brief, venues, dinner, followup, playbook) are listed by --help.
 """
 
 import argparse
@@ -419,6 +412,149 @@ Raw search research as JSON:
     write_pack(slugify("events", region), f"Competitor events radar - {region}", synthesise(prompt))
 
 
+def cmd_mirror(key, args):
+    """EMEA companies that mirror the existing (US) customer base."""
+    seeds = read_lines(args.seeds)
+    region = args.region
+    stems = ["".join(c for c in a.lower() if c.isalnum()) for a in seeds]
+    pool, seen = [], set()
+
+    def keep(seed, r, how):
+        url = r.get("url") or ""
+        domain = url.split("//")[-1].split("/")[0]
+        if not url or url in seen or any(d in domain for d in DIRECTORY_DOMAINS + SELF_NOISE):
+            return
+        if any(st and st in domain.replace("-", "") for st in stems):
+            return
+        seen.add(url)
+        pool.append({"mirrors": seed, "how": how, "title": r.get("title"), "url": url,
+                     "text": (r.get("text") or "")[:700]})
+
+    for seed in seeds:
+        q = f"company like {seed} headquartered in {region}: same kind of product, same kind of buyer"
+        print(f"  exa search: [{seed}] {q}")
+        try:
+            for r in exa_search(key, q, args.per_seed, "company"):
+                keep(seed, r, "search")
+        except Exception as e:
+            print(f"  ! search failed for {seed}: {e}")
+        try:
+            url = resolve_homepage(key, seed)
+            print(f"  exa findSimilar: {seed} ({url})")
+            for r in exa_similar(key, url, args.per_seed):
+                keep(seed, r, "findSimilar")
+        except Exception as e:
+            print(f"  ! findSimilar failed for {seed}: {e}")
+    answers = ask(key, [
+        f"Which {region} cities have the densest clusters of companies building AI agents, AI coding tools, or AI-native software in 2026?",
+        f"Which {region} startups and scale-ups building AI products publicly use web search or retrieval APIs in their agents?",
+    ])
+    print(f"  {len(pool)} candidates gathered, synthesising...")
+    prompt = f"""{EXA_CONTEXT}
+
+Task: the existing customer base is mostly US software companies. Seeds:
+{', '.join(seeds)}. Find the {region} mirror of that base: the companies
+here that look like those customers - same kind of product, same kind of
+buyer. Companies only. Never name an individual.
+
+Produce markdown with exactly these sections:
+
+## The mirror
+A table: Company | City | Mirrors | What they build | Why they fit | Source.
+Only companies the research supports as {region}-based (HQ or a real
+engineering office) and plausible buyers of a search API for agents. Cut
+consultancies, directories, media and junk hits, with no commentary.
+City must come from the source text; write "unconfirmed" if it does not.
+
+## Clusters
+A table: City | Companies in the mirror | Dominant type | Read.
+Then two or three sentences on what the clustering says about where field
+activity concentrates first and what format fits each cluster (developer
+room vs vertical room).
+
+## Where the mirror breaks
+Two short lists. Seed types with no {region} twin found in this research.
+{region} clusters with no seed precedent (a local pattern the US base
+does not show). Ground both in the research; mark inference as inference.
+
+## Gaps
+What this research could not establish and what a human checks next.
+
+Cited answers from Exa's answer API:
+{json.dumps(answers, indent=1)}
+
+Raw research as JSON (the "mirrors" field = the seed it was found from):
+{json.dumps(pool, indent=1)}"""
+    write_pack(slugify("mirror", region), f"Customer mirror - {region}", synthesise(prompt))
+
+
+def cmd_cohosts(key, args):
+    """Who already runs recurring rooms for an audience in a city."""
+    city, audience = args.city, args.audience
+    queries = [
+        ("luma", f"{audience} meetup {city}", None, 10, "2026-01-01"),
+        ("luma-2", f"{city} AI builders monthly event", None, 10, "2026-01-01"),
+        ("meetup", f"{audience} {city} recurring meetup group", None, 6, "2025-09-01"),
+        ("hack", f"{city} AI hackathon evening community organisers 2026", None, 6, "2026-01-01"),
+        ("series", f"{audience} {city} event series sponsors partners 2026", None, 6, "2026-01-01"),
+    ]
+    # Luma and Meetup pages carry the cadence and the sizes; pull them directly.
+    pool = []
+    for label, q, cat, num, since in queries:
+        domains = ["lu.ma", "luma.com"] if label.startswith("luma") else (["meetup.com"] if label == "meetup" else None)
+        print(f"  exa search: [{label}] {q}")
+        try:
+            body = {"query": q, "numResults": num, "startPublishedDate": since,
+                    "contents": {"text": {"maxCharacters": 1200}}}
+            if domains:
+                body["includeDomains"] = domains
+            for r in exa_post(key, "/search", body)["results"]:
+                if r.get("url") in {x["url"] for x in pool}:
+                    continue
+                pool.append({"for": label, "title": r.get("title"), "url": r.get("url"),
+                             "published": r.get("publishedDate"), "text": (r.get("text") or "")[:1200]})
+        except Exception as e:
+            print(f"  ! search failed, skipping: {e}")
+    answers = ask(key, [
+        f"Which recurring meetups, demo nights or hackathon series for {audience} run in {city} in 2026, who organises them, and how often?",
+        f"Which AI companies co-host or sponsor community events for {audience} in {city} in 2026?",
+    ])
+    print(f"  {len(pool)} signals gathered, synthesising...")
+    prompt = f"""{EXA_CONTEXT}
+
+Task: a field marketer wants to co-host in {city} with whoever already owns
+the room for {audience}, rather than build a list from zero. Map the
+recurring formats. Name organisations and formats, never individuals -
+write "the organiser" where a source names a person.
+
+Produce markdown with exactly these sections:
+
+## Recurring rooms
+A table: Format | Run by (organisation) | Cadence | Typical size | Audience | Last seen | Source.
+Only formats the research shows running more than once, or announced as a
+series. Size and cadence from the source text; write "not stated" otherwise.
+
+## One-offs worth knowing
+A short list of single events in the research that show who can pull
+{audience} in {city}: format, organiser (organisation), date, size if stated.
+
+## Partner read
+Two short paragraphs. Which rooms hold the list a search-API company would
+want, and why. Which formats fit a partner slot (a demo, a track, a
+sponsor) versus a room that already has a vendor attached. Ground every
+claim; mark inference as inference.
+
+## Gaps
+What this research could not establish and what a human checks next.
+
+Cited answers from Exa's answer API:
+{json.dumps(answers, indent=1)}
+
+Raw research as JSON:
+{json.dumps(pool, indent=1)}"""
+    write_pack(slugify("cohosts", city), f"Co-host map - {audience}, {city}", synthesise(prompt))
+
+
 def cmd_narrative(key, args):
     """Which words a category is putting on stage, and who owns them."""
     themes = [t.strip() for t in args.themes.split(",") if t.strip()] if args.themes else []
@@ -751,6 +887,15 @@ def main():
     ev.add_argument("--competitors", required=True, help='comma list: "Tavily, Firecrawl, Perplexity"')
     ev.add_argument("--region", default="EMEA")
 
+    mi = sub.add_parser("mirror", help="the region's mirror of the existing customer base")
+    mi.add_argument("seeds", help="file: one existing customer per line")
+    mi.add_argument("--region", default="EMEA")
+    mi.add_argument("--per-seed", type=int, default=8)
+
+    ch = sub.add_parser("cohosts", help="who already runs recurring rooms for an audience in a city")
+    ch.add_argument("city")
+    ch.add_argument("--audience", default="AI developers")
+
     nr = sub.add_parser("narrative", help="what the category says on stage, and who owns which words")
     nr.add_argument("--category", default="AI search and retrieval infrastructure")
     nr.add_argument("--region", default="EMEA")
@@ -795,7 +940,7 @@ def main():
     args = ap.parse_args()
     key = load_key()
     print(f"field-agent {args.cmd}")
-    {"market": cmd_market, "competitors": cmd_competitors, "events": cmd_events, "expand": cmd_expand,
+    {"market": cmd_market, "competitors": cmd_competitors, "events": cmd_events, "mirror": cmd_mirror, "cohosts": cmd_cohosts, "expand": cmd_expand,
      "guests": cmd_guests, "brief": cmd_brief, "venues": cmd_venues, "dinner": cmd_dinner,
      "followup": cmd_followup, "playbook": cmd_playbook,
      "narrative": cmd_narrative, "sidebar": cmd_sidebar}[args.cmd](key, args)
