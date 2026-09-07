@@ -8,16 +8,16 @@ Built with Exa search + Claude. Research is a starting point, not a send list.
 
 | Name | Role & company | Why this seat | Source |
 |---|---|---|---|
-| [redacted] | Director, Platform Engineering, Wise | 7+ years building Wise's foundational engineering org through its scale-up years; a fintech platform leader who has actually shipped at $1-2B revenue scale, not just talked about it | public profile (redacted) |
-| [redacted] | Director of Global Platform Engineering, Sky | Runs a ~1,000-person platform org across five countries powering Peacock, NOW, SkyShowtime and live NFL/Premier League streaming — genuine "platform at breaking-point scale" war stories | public profile (redacted) |
-| [redacted] | Director of Platform Engineering, FlawlessAI | Leads platform/DevEx/SRE at an AI company, giving him a direct, current view into the infra problems AI-native teams hit — closest profile match to Exa's own buyer | public profile (redacted) |
-| [redacted] | Director of Platform Engineering, Alpha Group | Building an internal developer platform on Backstage with FinOps and ISO compliance baked in — a live, specific IDP build he can speak to in detail | public profile (redacted) |
-| [redacted] | VP Platform Engineering, Napier AI | VP-level owner of DevOps/SRE/cloud/InfoSec at an AI-driven AML scale-up serving regulated banks — senior enough to set vision, technical enough to stay hands-on | public profile (redacted) |
-| [redacted] | VP Engineering, Platforms, Deliveroo | VP owning the platform org at a household-name, IPO'd tech company operating across 52 countries — a strong anchor guest for credibility | public profile (redacted) |
-| [redacted] | Group Head of Engineering Platforms and Architecture, HSBC | Just stepped into a group-wide platform and architecture mandate (Jan 2026) at one of the world's largest banks — a fresh, high-authority perspective on enterprise-scale platform strategy | public profile (redacted) |
-| [redacted] | VP of Platform Engineering, Boku | VP over engineering, security and DPO responsibilities at a global mobile payments network — brings a security/compliance-forward view of platform work | public profile (redacted) |
-| [redacted] | Director of Platform Engineering, Visa | Recently (Oct 2025) moved into a Director role at Visa after building DevSecOps and infra-as-code programmes at LSEG, Pearson and the UK Home Office — broad public/private infra pedigree | public profile (redacted) |
-| [redacted] | Managing Director, Platform Engineering, State Street | MD-level owner of platform engineering at a major global custodian bank, having climbed through infra-as-code, automation and cloud delivery roles there since 2020 | public profile (redacted) |
+| [redacted] | Director, Platform Engineering, Wise | She spent 7+ years building Wise's foundational engineering org through its scale-up years. She shipped at $1-2B revenue scale. | public profile (redacted) |
+| [redacted] | Director of Global Platform Engineering, Sky | He runs a roughly 1,000-person platform org across five countries. The org powers Peacock, NOW, SkyShowtime and live NFL and Premier League streaming. He has genuine platform-at-scale war stories. | public profile (redacted) |
+| [redacted] | Director of Platform Engineering, FlawlessAI | He leads platform, DevEx and SRE at an AI company. He has a direct, current view into the infra problems AI-native teams hit. His profile matches Exa's own buyer closely. | public profile (redacted) |
+| [redacted] | Director of Platform Engineering, Alpha Group | He is building an internal developer platform on Backstage. The platform bakes in FinOps and ISO compliance. He can speak to this build in detail. | public profile (redacted) |
+| [redacted] | VP Platform Engineering, Napier AI | She owns DevOps, SRE, cloud and InfoSec at an AI-driven AML scale-up. The scale-up serves regulated banks. She is senior enough to set vision and technical enough to stay hands-on. | public profile (redacted) |
+| [redacted] | VP Engineering, Platforms, Deliveroo | He owns the platform org at a household-name, IPO'd tech company. The company operates across 52 countries. He is a strong anchor guest for credibility. | public profile (redacted) |
+| [redacted] | Group Head of Engineering Platforms and Architecture, HSBC | He stepped into a group-wide platform and architecture mandate in January 2026. HSBC is one of the world's largest banks. He brings a fresh, high-authority perspective on enterprise-scale platform strategy. | public profile (redacted) |
+| [redacted] | VP of Platform Engineering, Boku | He holds VP responsibility for engineering, security and DPO duties at a global mobile payments network. He brings a security and compliance-forward view of platform work. | public profile (redacted) |
+| [redacted] | Director of Platform Engineering, Visa | He moved into a Director role at Visa in October 2025. Before that he built DevSecOps and infra-as-code programmes at LSEG, Pearson and the UK Home Office. He brings broad public and private infra experience. | public profile (redacted) |
+| [redacted] | Managing Director, Platform Engineering, State Street | He owns platform engineering at a major global custodian bank at MD level. He has held infra-as-code, automation and cloud delivery roles there since 2020. | public profile (redacted) |
 
 ## Invites
 
@@ -27,9 +27,9 @@ Subject: Dinner in London — platform engineering leaders, no deck required
 
 Hi [redacted],
 
-We're pulling together a small dinner in London for people running platform engineering at scale, and your seven years building out Wise's foundational engineering org stood out — that's a rare stretch of continuity through real hypergrowth.
+We're pulling together a small dinner in London for people running platform engineering at scale. Your seven years building out Wise's foundational engineering org stood out. That is a rare stretch of continuity through real hypergrowth.
 
-We're the team behind Exa, a search engine built for AI systems, and we'd rather spend an evening talking shop with people like you than run a pitch. Good food, good wine, no slides.
+We're the team behind Exa, a search engine built for AI systems. We'd rather spend an evening talking shop with people like you than run a pitch. Good food, good wine, no slides.
 
 Would you be free to join us? Happy to share the guest list once it's firmer.
 
@@ -43,9 +43,9 @@ Subject: A dinner for people building AI-native platforms
 
 Hi [redacted],
 
-Leading platform, DevEx and SRE at FlawlessAI puts you closer than most to the actual infra pain of building for AI workloads day to day — that's exactly the conversation we want in the room.
+You lead platform, DevEx and SRE at FlawlessAI. That puts you closer than most to the actual infra pain of building for AI workloads day to day. That is exactly the conversation we want in the room.
 
-We're the team behind Exa, a search engine built for AI systems, hosting a small dinner in London for platform engineering leaders. No pitch, no deck — just a good table and people who've actually hit these problems.
+We're the team behind Exa, a search engine built for AI systems. We're hosting a small dinner in London for platform engineering leaders. No pitch, no deck. Just a good table and people who've actually hit these problems.
 
 Would you like to join us?
 
@@ -59,9 +59,9 @@ Subject: Dinner in London for platform engineering leaders
 
 Hi [redacted],
 
-Running a platform org across five countries that powers NFL streaming records and Premier League nights is the kind of scale story most platform teams only imagine — we'd love to hear it over dinner rather than a call.
+You run a platform org across five countries that powers NFL streaming records and Premier League nights. Most platform teams only imagine that kind of scale. We'd love to hear it over dinner rather than a call.
 
-We're the team behind Exa, a search engine built for AI systems, and we're hosting a small, informal dinner in London for people leading platform engineering at this level. No pitch, just good conversation.
+We're the team behind Exa, a search engine built for AI systems. We're hosting a small, informal dinner in London for people leading platform engineering at this level. No pitch, just good conversation.
 
 Would you be able to join?
 
@@ -77,7 +77,7 @@ The Exa team in London
 **5:15pm** — Test any welcome signage/name reader at entrance; confirm coat check.
 **5:30pm** — Hosts on-site, final table check, phones/chargers stashed, welcome drinks staged.
 **6:00pm** — Host team stationed at entrance; late-RSVP or no-show list on hand for the room block.
-**6:30pm** — Guest arrival window opens; welcome drinks in a separate area from the dinner table (avoids awkward standing-around-empty-table energy).
+**6:30pm** — Guest arrival window opens; welcome drinks served in a separate area from the dinner table so guests don't stand around an empty table.
 **6:55pm** — Move to table; opening remarks from host (60-90 seconds, no pitch).
 **7:05pm** — Starters served; hosts seed one open question to the table ("what's actually broken in platform engineering right now").
 **7:45pm** — Mains served; hosts rotate attention, ensure quieter guests get pulled in.
@@ -88,6 +88,6 @@ The Exa team in London
 
 ## Gaps
 
-- Current employment and title cannot be confirmed beyond the LinkedIn snapshot in this research — several profiles show role changes as recent as this year ([redacted], [redacted], [redacted]), so a human must re-verify each guest is still in the stated role before invites go out.
-- Seniority and fit for "platform engineering leaders" varies (MD/VP/Director/Head) and a few adjacent hits (data platform, product platform, CIO-level) were excluded as not squarely platform engineering — worth a second pass to confirm none of the excluded HSBC/Lloyds profiles are actually a better fit than assumed here.
-- No email addresses or personal contact details were present in this research, and LinkedIn-sourced profile text should be treated as public data only — confirm GDPR-clean provenance and get proper contact details (via CRM, LinkedIn InMail, or intro) before sending anything.
+- This research cannot confirm current employment and title beyond the LinkedIn snapshot. Several profiles show role changes as recent as this year ([redacted], [redacted], [redacted]). A human must re-verify each guest is still in the stated role before invites go out.
+- Seniority and fit for "platform engineering leaders" varies across MD, VP, Director and Head titles. This research excluded a few adjacent hits (data platform, product platform, CIO-level) as not squarely platform engineering. A second pass should confirm none of the excluded HSBC or Lloyds profiles fits better than assumed here.
+- This research found no email addresses or personal contact details. Treat LinkedIn-sourced profile text as public data only. Confirm GDPR-clean provenance and get proper contact details, via CRM, LinkedIn InMail, or intro, before sending anything.
